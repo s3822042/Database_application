@@ -1,14 +1,13 @@
 -- DROP DATABASE db_couse;
 -- CREATE DATABASE db_couse;
 -- USE db_couse;
-
 CREATE TABLE IF NOT EXISTS Vendor(
     VendorID int NOT NULL AUTO_INCREMENT,
     VendorName varchar(50) NOT NULL,
     VendorAddress varchar(50) UNIQUE NOT NULL,
     VendorUsername varchar(50) UNIQUE NOT NULL,
     VendorPassword varchar(50) NOT NULL,
-    Latitude FLOAT NOT NULL ,
+    Latitude FLOAT NOT NULL,
     Longitude FLOAT NOT NULL,
     PRIMARY KEY (VendorID)
 ) ENGINE = InnoDB;
@@ -19,7 +18,7 @@ CREATE TABLE IF NOT EXISTS Customer(
     CustomerAddress varchar(50) UNIQUE NOT NULL,
     CustomerUsername varchar(50) UNIQUE NOT NULL,
     CustomerPassword varchar(50) NOT NULL,
-    Latitude FLOAT NOT NULL ,
+    Latitude FLOAT NOT NULL,
     Longitude FLOAT NOT NULL,
     PRIMARY KEY (CustomerID)
 ) ENGINE = InnoDB;
@@ -28,7 +27,7 @@ CREATE TABLE IF NOT EXISTS Hub(
     HubID int NOT NULL AUTO_INCREMENT,
     HubName varchar(50) NOT NULL,
     HubAddress varchar(50) NOT NULL,
-    Latitude FLOAT NOT NULL ,
+    Latitude FLOAT NOT NULL,
     Longitude FLOAT NOT NULL,
     PRIMARY KEY (HubID)
 ) ENGINE = InnoDB;
@@ -58,7 +57,7 @@ CREATE TABLE IF NOT EXISTS Orders(
 ) ENGINE = InnoDB;
 
 CREATE TABLE IF NOT EXISTS OrderDetail(
-    OrderID int ,
+    OrderID int,
     ProductID int,
     Amount int,
     FOREIGN KEY (OrderID) REFERENCES Orders(OrderID)

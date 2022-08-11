@@ -31,7 +31,7 @@ if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
 }
 
 // Include config file
-require_once "db.php";
+require_once "config_mysql.php";
 
 // Define variables and initialize with empty values
 $username = $_POST['username'];

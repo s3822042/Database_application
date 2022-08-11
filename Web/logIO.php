@@ -7,7 +7,7 @@
     exit();
   }
 
-  if (isset($_POST['logIO'])) {
+  if (isset($_POST['login'])) {
     if (isset($_SESSION["user"])) {
       session_destroy();
     }

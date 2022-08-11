@@ -14,7 +14,7 @@
     <h1>Sign in</h1>
       <div class='form-control'>
 
-        <div class="forum" style={{marginTop: 20}}>
+        <div class="forum">
           <input id="inputUserType" type="hidden" name="userType" value="customer">
           <ul id="userType" style="padding-left: 0px;">
             <li id="customer" class="button-34 btnActive" onclick="changeUserType('customer');">Customer
@@ -54,7 +54,7 @@
 
         <div id='wrongpass' class='req' style="margin-top: 15px;">* Password must match ! Please try again</div>
         <a href="signup.php" style="display: block; width: 100%; margin-top: 5px; margin-bottom: 15px;">Dont' have an account? Sign up here</a>
-        <button type="submit" name="logIO" class="buttonSubmit">Sign in</button>
+        <button type="submit" name="login" class="buttonSubmit">Sign in</button>
 
       </div>
     </form>

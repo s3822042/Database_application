@@ -35,6 +35,7 @@ if (isSuccess()) {
           return false;
       }
       else{
+          echo "1";
           //include our database connection
           require "config_mysql.php";
 
@@ -44,20 +45,24 @@ if (isSuccess()) {
 
           if($stmt->rowCount() > 0){
               //username with that usertype already taken
+              echo "2";
               return false;
           }
           else{
               //encrypt password using password_hash()
+              echo "3";
               $password = password_hash($password, PASSWORD_DEFAULT);
 
               //insert new user to our database
               $stmt = $conn->prepare('INSERT INTO users (usertype,name, address, username, password) VALUES (:usertype,:name, :address, :username :password)');
 
               try{
+                  echo "4";
                   $stmt->execute(['userType' => $userType,'name' => $name, 'address' => $address, 'username' => $username, 'password' => $password]);
                   return true;
               }
               catch(PDOException $e){
+                  echo "5";
                   return false;
               }
 
@@ -67,8 +72,10 @@ if (isSuccess()) {
 
   }
   else{
+      echo "6";
       return false;
   }
+    echo "7";
     return true; // True if the user register success; False otherwise
   }
 ?>

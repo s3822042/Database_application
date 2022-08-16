@@ -60,7 +60,7 @@ function isExist()
 
     }
     catch(PDOException $e){
-        $_SESSION['error'] = $e->getMessage();
+        return false;
     }
   else{
     return false;

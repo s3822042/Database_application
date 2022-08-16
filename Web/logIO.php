@@ -28,14 +28,15 @@ function isExist()
 {
   require "config_mysql.php";
   //assign variables to post values
+  $userType = $_POST["userType"];
   $username = $_POST["username"];
   $password = $_POST["pass1"];
 
   //get the user with username
-  $stmt = $conn->prepare('SELECT * FROM users WHERE username = :username');
+  $stmt = $conn->prepare('SELECT * FROM users WHERE username = :username and userType = :userType');
   if ($_SERVER["REQUEST_METHOD"] == "POST")
     try{
-        $stmt->execute(['username' => $username]);
+        $stmt->execute(['username' => $username, 'username' => $username]);
 
         //check if username exist
         if($stmt->rowCount() > 0){

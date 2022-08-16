@@ -23,6 +23,7 @@ if (isSuccess()) {
     // echo "Full data: ", implode(" ", $_POST);
     if ($_SERVER["REQUEST_METHOD"] == "POST"){
       //assign variables to post values
+      $userType = $_POST['userType'];
       $name = $_POST['name'];
       $address = $_POST['address'];
       $username = $_POST['username'];
@@ -38,11 +39,11 @@ if (isSuccess()) {
           require "config_mysql.php";
 
           //check if the email is already taken
-          $stmt = $conn->prepare('SELECT * FROM users WHERE username = :username');
-          $stmt->execute(['username' => $username]);
+          $stmt = $conn->prepare('SELECT * FROM users WHERE username = :username and userType= :userType');
+          $stmt->execute(['username' => $username,'userType' => $userType]);
 
           if($stmt->rowCount() > 0){
-              //email already taken
+              //username with that usertype already taken
               return false;
           }
           else{
@@ -50,10 +51,10 @@ if (isSuccess()) {
               $password = password_hash($password, PASSWORD_DEFAULT);
 
               //insert new user to our database
-              $stmt = $conn->prepare('INSERT INTO users (name, address, username, password) VALUES (:name, :address, :username :password)');
+              $stmt = $conn->prepare('INSERT INTO users (usertype,name, address, username, password) VALUES (:usertype,:name, :address, :username :password)');
 
               try{
-                  $stmt->execute(['name' => $name, 'address' => $address, 'username' => $username, 'password' => $password]);
+                  $stmt->execute(['userType' => $userType,'name' => $name, 'address' => $address, 'username' => $username, 'password' => $password]);
                   return true;
               }
               catch(PDOException $e){

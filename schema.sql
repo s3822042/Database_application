@@ -62,3 +62,13 @@ CREATE TABLE IF NOT EXISTS OrderDetail(
     Amount int,
     FOREIGN KEY (OrderID) REFERENCES Orders(OrderID)
 ) ENGINE = InnoDB;
+
+CREATE TABLE IF NOT EXISTS `Product` (
+  `ProductID` int NOT NULL AUTO_INCREMENT,
+  `VendorID` int DEFAULT NULL,
+  `Status` int DEFAULT NULL,
+  `Price` int DEFAULT NULL,
+  PRIMARY KEY (`ProductID`),
+  KEY `VendorID` (`VendorID`),
+  CONSTRAINT `orders_ibfk_` FOREIGN KEY (`VendorID`) REFERENCES `Vendor` (`VendorID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci

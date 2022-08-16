@@ -1,16 +1,16 @@
 <?php
-  session_start();
+session_start();
 
-  if (isset($_SESSION['user'])) {
-    session_destroy();
-  }
+if (isset($_SESSION['user'])) {
+  session_destroy();
+}
 
-  if (isSuccess()) {
-    $_SESSION['user']['type'] = htmlentities($_POST["userType"], ENT_QUOTES);
-    header("Location: home.php");
-  } else {
-    header("Location: signup.php");
-  }
+if (isSuccess()) {
+  $_SESSION['user']['type'] = htmlentities($_POST["userType"], ENT_QUOTES);
+  header("Location: home.php");
+} else {
+  header("Location: signup.php");
+}
 ?>
 
 <?php

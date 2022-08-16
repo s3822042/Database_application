@@ -26,57 +26,43 @@ if (isset($_POST['login'])) {
 <?php
 function isExist()
 {
-  include "config_mysql.php";
+  require "config_mysql.php";
+  //assign variables to post values
   $username = $_POST["username"];
   $password = $_POST["pass1"];
 
-  $username_err = $password_err = $login_err = "";
-  echo "in";
-  // Check if username is empty
-  if (empty(trim($_POST["username"]))) {
-    $username_err = "Please enter username.";
-  }
+  //get the user with username
+  $stmt = $conn->prepare('SELECT * FROM users WHERE username = :username');
+  if ($_SERVER["REQUEST_METHOD"] == "POST")
+    try{
+        $stmt->execute(['username' => $username]);
 
-  // Check if password is empty
-  if (empty(trim($_POST["pass1"]))) {
-    $password_err = "Please enter your password.";
-  }
-  // echo "User Type: ", $_POST['userType'], "<br>";
-  // echo "Username: ", $_POST['username'], "<br>";
-  // echo "Password: ", $_POST['pass1'], "<br>";
-  // echo "Full data: ", implode(" ", $_POST), "<br>";
-  // Processing form data when form is submitted
-  if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    echo "1";
-    // Validate credentials
-    if (empty($username_err) && empty($password_err)) {
-      echo "2";
-      // Prepare a select statement
-      $query = "SELECT * FROM user_db WHERE username = '$username'";
-      // Values array for PDO
-      // $values = [':name' => $username];
-      // Execute the query 
-      try {
-        $res = $pdo->prepare($query);
-        $res->execute($username);
-      } catch (PDOException $e) {
-        // Query error 
-        return false;
-      }
+        //check if username exist
+        if($stmt->rowCount() > 0){
+            //get the row
+            $user = $stmt->fetch();
 
-      $row = $res->fetch(PDO::FETCH_ASSOC);
+            //validate inputted password with $user password
+            if(password_verify($password, $user['pass1'])){
+                //action after a successful login
+                return true;
+            }
+            else{
+                //return the false for failed login
+                return false;
+            }
 
-      // If there is a result, check if the password matches using password_verify()
-      if (is_array($row)) {
-        if (password_verify($password, $row['password'])) {
-          // The password is correct
-          return true;
         }
-      return false;
-      }
+        else{
+            return false;
+        }
+
     }
+    catch(PDOException $e){
+        $_SESSION['error'] = $e->getMessage();
+    }
+  else{
     return false;
-  }
-  echo "8";
-  return false;
+}
+
 }

@@ -52,24 +52,31 @@ function isExist()
     if (empty($username_err) && empty($password_err)) {
       echo "2";
       // Prepare a select statement
-      $sql = "SELECT * FROM users WHERE username = '$username'";
-      echo "7";
-      $result = mysqli_query($connect, $sql);
-      if (mysqli_num_rows($result) > 0) {
-        while ($row = mysqli_fetch_array($result)) {
-          if (password_verify($password, $row["password"])) {
-            return true;
-          } else {
-            return false;
-          }
-        }
-      } else {
-        echo '<script>alert("Wrong User Details")</script>';
+      $query = "SELECT * FROM user_db WHERE username = '$username'";
+      // Values array for PDO
+      // $values = [':name' => $username];
+      // Execute the query 
+      try {
+        $res = $pdo->prepare($query);
+        $res->execute($username);
+      } catch (PDOException $e) {
+        // Query error 
         return false;
       }
+
+      $row = $res->fetch(PDO::FETCH_ASSOC);
+
+      // If there is a result, check if the password matches using password_verify()
+      if (is_array($row)) {
+        if (password_verify($password, $row['password'])) {
+          // The password is correct
+          return true;
+        }
+      return false;
+      }
     }
-    // True if the user exists in database; False otherwise.
+    return false;
   }
   echo "8";
-  return FALSE;
+  return false;
 }

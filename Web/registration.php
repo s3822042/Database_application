@@ -40,21 +40,18 @@ if (isSuccess()) {
           $stmt->execute();
           $user= $stmt->fetch();
           echo $stmt->rowCount();
-          if($user->rowCount() > 0){
+          if($stmt->rowCount() > 0){
               //username with that usertype already taken
-              echo "2";
               return false;
           }
           else{
               //encrypt password using password_hash()
-              echo "3";
               $password = password_hash($password, PASSWORD_DEFAULT);
 
               //insert new user to our database
-              $stmt = $conn->prepare('INSERT INTO users (userType,name, address, username, password) VALUES (:userType,:name, :address, :username :password)');
+              $stmt = $conn->prepare('INSERT INTO users (userType,name, address, username, password) VALUES (:userType,:name, :address, :username, :password)');
 
               try{
-                  echo "4";
                   $stmt->bindValue(':userType',$userType);
                   $stmt->bindValue(':name',$name);
                   $stmt->bindValue(':address',$address);
@@ -64,7 +61,6 @@ if (isSuccess()) {
                   return true;
               }
               catch(PDOException $e){
-                  echo "5";
                   return false;
               }
 

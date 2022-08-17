@@ -42,18 +42,20 @@ function isExist()
 
       $stmt->execute();
 
-      //check if username exist
+      //get database in an array
       $user = $stmt->fetch();
+
+      //Check if there is that username
       if ($stmt->rowCount()>0) {
-        //get the row
+
         //validate inputted password with $user password
         if (password_verify($password, $user[5])) {
-          //action after a successful login
 
+          //action after a successful login
           return true;
         } else {
-          //return the false for failed login
 
+          //return the false for failed login
           return false;
         }
       } else {

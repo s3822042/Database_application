@@ -16,12 +16,6 @@ if (isSuccess()) {
 <?php
   function isSuccess() {
     require "config_mysql.php";
-    // echo "User Type: ", $_POST['userType'], "<br>";
-    // echo "Username: ", $_POST['username'], "<br>";
-    // echo "Username: ", $_POST['disHub'], "<br>";
-    // echo "Password 1: ", $_POST['pass1'], "<br>";
-    // echo "Password 2: ", $_POST['pass2'], "<br>";
-    // echo "Full data: ", implode(" ", $_POST);
     if ($_SERVER["REQUEST_METHOD"] == "POST"){
       //assign variables to post values
       $userType = $_POST['userType'];
@@ -30,8 +24,6 @@ if (isSuccess()) {
       $username = $_POST['username'];
       $password = $_POST['pass1'];
       $confirm = $_POST['pass2'];
-
-          //include our database connection
 
           //check if the username is already taken
           $stmt = $conn->prepare('SELECT * FROM users WHERE username = :username and userType= :userType');

@@ -15,6 +15,7 @@ if (isSuccess()) {
 
 <?php
   function isSuccess() {
+    require "config_mysql.php";
     // echo "User Type: ", $_POST['userType'], "<br>";
     // echo "Username: ", $_POST['username'], "<br>";
     // echo "Username: ", $_POST['disHub'], "<br>";
@@ -30,20 +31,16 @@ if (isSuccess()) {
       $password = $_POST['pass1'];
       $confirm = $_POST['pass2'];
 
-      //check if password matches confirm password
-      if($password != $confirm){
-          return false;
-      }
-      else{
-          echo "1";
           //include our database connection
-          require "config_mysql.php";
 
-          //check if the email is already taken
+          //check if the username is already taken
           $stmt = $conn->prepare('SELECT * FROM users WHERE username = :username and userType= :userType');
-          $stmt->execute(['username' => $username,'userType' => $userType]);
-
-          if($stmt->rowCount() > 0){
+          $stmt->bindValue(':username',$username);
+          $stmt->bindValue(':userType',$userType);
+          $stmt->execute();
+          $user= $stmt->fetch();
+          echo $stmt->rowCount();
+          if($user->rowCount() > 0){
               //username with that usertype already taken
               echo "2";
               return false;
@@ -54,11 +51,16 @@ if (isSuccess()) {
               $password = password_hash($password, PASSWORD_DEFAULT);
 
               //insert new user to our database
-              $stmt = $conn->prepare('INSERT INTO users (usertype,name, address, username, password) VALUES (:usertype,:name, :address, :username :password)');
+              $stmt = $conn->prepare('INSERT INTO users (userType,name, address, username, password) VALUES (:userType,:name, :address, :username :password)');
 
               try{
                   echo "4";
-                  $stmt->execute(['userType' => $userType,'name' => $name, 'address' => $address, 'username' => $username, 'password' => $password]);
+                  $stmt->bindValue(':userType',$userType);
+                  $stmt->bindValue(':name',$name);
+                  $stmt->bindValue(':address',$address);
+                  $stmt->bindValue(':username',$username);
+                  $stmt->bindValue(':password',$password);
+                  $stmt->execute();
                   return true;
               }
               catch(PDOException $e){
@@ -69,13 +71,6 @@ if (isSuccess()) {
           }
 
       }
-
-  }
-  else{
-      echo "6";
       return false;
-  }
-    echo "7";
-    return true; // True if the user register success; False otherwise
   }
 ?>

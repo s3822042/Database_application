@@ -36,15 +36,16 @@ function isExist()
   $stmt = $conn->prepare('SELECT * FROM users WHERE username = :username and userType = :userType');
   if ($_SERVER["REQUEST_METHOD"] == "POST")
     try {
-      $stmt->execute(['username' => $username, 'username' => $username]);
+      //Bind our variables
+      $stmt->execute(['username' => $username, 'userType' => $userType]);
 
       //check if username exist
       if ($stmt->rowCount() > 0) {
         //get the row
-        $user = $stmt->fetch();
+        $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
         //validate inputted password with $user password
-        if (password_verify($password, $user['pass1'])) {
+        if (password_verify($password, $user['password'])) {
           //action after a successful login
 
           return true;

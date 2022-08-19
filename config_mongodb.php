@@ -9,6 +9,6 @@ try {
 } catch (Exception $e) {
     echo $e->getMessage();
     die(1);
-}
+}   
 
 $product_extras = $mongodb_client->product->product;

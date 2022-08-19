@@ -33,7 +33,7 @@
         <div class="b">
           <p class="card-text">search products based on name (products whose names start with the words entered by customers) and price (products whose prices are within a range entered by customers)</p>
         </div>
-        <a href="#" class="btn btn-primary make-bottom">Update order</a>
+        <a href="users/shipper/test.php" class="btn btn-primary make-bottom">Update order</a>
       </div>
     </div>
   </div>

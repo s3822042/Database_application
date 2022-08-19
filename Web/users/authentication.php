@@ -1,6 +1,6 @@
 <?php
   if($_SESSION["user"]["type"] != $pageType) {
-    header("Location: ../Web/login.php");
+    header("Location: ../login.php");
     exit();
   }
 ?>

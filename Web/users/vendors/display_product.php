@@ -11,8 +11,6 @@ $extra_fields = false;
 if (isset($_GET["id"])) {
     $product_id = $_GET['id'];
 
-    print_r($product_id);
-
     $query = "SELECT * FROM product WHERE product.id = $product_id";
     $row = $pdo->query($query)->fetch(PDO::FETCH_ASSOC);
     $mongo_doc = $product_extras->findOne(['_id' => (int) $product_id], ['projection' => ['_id' => 0]]);

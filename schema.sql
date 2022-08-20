@@ -65,8 +65,10 @@ CREATE TABLE IF NOT EXISTS OrderDetail(
 
 CREATE TABLE IF NOT EXISTS `Product` (
   `ProductID` int NOT NULL AUTO_INCREMENT,
+  `ProductName` varchar(255) NOT NULL,
+  `ProductDescription` varchar(255) NOT NULL,
   `VendorID` int DEFAULT NULL,
-  `Status` int DEFAULT NULL,
+  `Status` varchar(255),
   `Price` int DEFAULT NULL,
   PRIMARY KEY (`ProductID`),
   KEY `VendorID` (`VendorID`),

@@ -1,5 +1,7 @@
 <?php
 
+session_start();
+
 require "config_mongodb.php";
 require "config_mysql.php";
 

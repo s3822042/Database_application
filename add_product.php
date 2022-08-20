@@ -4,11 +4,39 @@ require "config_mongodb.php";
 require "config_mysql.php";
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $product_price = $_POST['product_price'];
-    $vendor_id = $_POST['vendor_id'];
-    $status = "available";
-    $sql = "INSERT INTO Product (Price, VendorID) VALUES ('$product_price', '$vendor_id')";
-    $res = $conn->exec('$sql');
+    $pdo->beginTransaction();
+    $stmt = $pdo->prepare("INSERT INTO `Product` (VendorID, ProductName,ProductDescription, Price, Status) VALUES (:vendor_id, :product_name, :product_description, :product_price, 'AVAILABLE')");
+    $stmt->bindParam(':vendor_id', $_SESSION['id']);
+    $stmt->bindParam(':product_name', $_POST['product_name']);
+    $stmt->bindParam(':product_description', $_POST['product_description']);
+    $stmt->bindParam(':product_price', $_POST['product_price']);
+
+    $result = $stmt->execute();
+
+    $product_id = $pdo->lastInsertId();
+
+    if (isset($_POST['field']) && isset($_POST['val'])) {
+        $extra_fields = array_combine($_POST['field'], $_POST['val']);
+
+        $product_id = array('_id' => (int) $product_id);
+        $extra_fields = array_merge($product_id, $extra_fields);
+
+        try {
+            $cursor = $product_extras->insertOne($extra_fields);
+        } catch (MongoDb\Exception\Exception $e) {
+            $createErr = 'Extra fields not added successfully';
+            $pdo->rollBack();
+        }
+    }
+
+    if ($result == true) {
+        $pdo->commit();
+        header("location:display_product.php");
+        exit();
+    } else {
+        $createErr = 'An error occurred. Product not created successfully';
+        $pdo->rollBack();
+    }
 }
 
 ?>
@@ -35,23 +63,27 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     <label for="name" class="mb-3 block text-base font-medium text-[#07074D]">
                         Product Name
                     </label>
-                    <input type="text" name="product_name" id="name" placeholder="Product Name" class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md" required />
+                    <input type="text" name="product_name" id="product_name" placeholder="Product Name" class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md" required />
                 </div>
                 <div class="mb-5">
                     <label for="subject" class="mb-3 block text-base font-medium text-[#07074D]">
                         Price
                     </label>
-                    <input type="number" name="product_price" id="price" placeholder="Product Price" class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md" />
+                    <input type="number" name="product_price" id="product_price" placeholder="Product Price" class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md" />
                 </div>
                 <div class="mb-5">
                     <label for="message" class="mb-3 block text-base font-medium text-[#07074D]">
                         Product Description
                     </label>
-                    <textarea rows="4" name="product_description" id="message" placeholder="Product Description" class="w-full resize-none rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"></textarea>
+                    <textarea rows="4" name="product_description" id="product_description" placeholder="Product Description" class="w-full resize-none rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"></textarea>
                 </div>
-
+                <!-- Additional Field -->
+                <div id="additionalField" class="mb-5">
+                </div>
+                <input type="button" value="+" onClick="addInput('additionalField');">
+                <!-- Submit -->
                 <div>
-                    <button type="submit" name="submit" class=" hover:shadow-form rounded-md bg-[#6A64F1] py-3 px-8 text-base
+                    <button type="submit" name="submit" class="hover:shadow-form rounded-md bg-[#6A64F1] py-3 px-8 text-base
                         font-semibold text-white outline-none">
                         Add Product
                     </button>
@@ -59,6 +91,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             </form>
         </div>
     </div>
+    <script src="js/script.js"></script>
 </body>
 
 </html>,

@@ -53,36 +53,17 @@
           </div>
         </div>
 
-        <div id="coordinateBlock" class='input-block'>
-          <div class="coordinateBlock">
-            <span id='latitude' class='req' style="float:left; margin-left: 10px;">* Require</span>
-            <span id='longitude' class='req' style="float:right; margin-right: 10px;">* Require</span>
-
-            <div style="clear:both;"></div>
-            <div class='wrapperSplit1' style="float: left; margin-left: 10px">
-              <div id='field6' class='input-control inside'>
-                <input id='inputLatitude' type='number' placeholder=' ' name='latitude'
-                onclick="addBorder('field6')"
-                onBlur="rmvBorder('field6')">
-                <label class='move-out'>Latitude</label>
-              </div>
-            </div>
-
-            <div class='wrapperSplit1' style="float:right; margin-right: 10px">
-              <div id='field7' class='input-control inside'>
-                <input id='inputLongitude' type='number' placeholder=' ' name='longitude'
-                onclick="addBorder('field7')"
-                onBlur="rmvBorder('field7')">
-                <label class='move-out'>Longitude</label>
-              </div>
-            </div>
-          </div>
-        </div>
-
         <div id="hubBlock" class="input-block"></div>
 
         <div class='input-block'>
-          <span id='username' class='req' style='float:right;'>* Require</span>
+          <?php
+            if (isset($_SESSION['status'])) {
+              echo "<span id='username' class='req' style='float:right; visibility: visible;'>* Try again</span>";
+              unset($_SESSION['status']);
+            } else {
+              echo "<span id='username' class='req' style='float:right;'>* Require</span>";
+            }
+          ?>
           <div style="clear:both;"></div>
           <div class='wrapper'>
             <div id='field3' class='input-control inside'>
@@ -145,11 +126,3 @@
 
 </body>
 </html>
-
-
-<?php
-if (isset($_SESSION['status'])) {
-  echo "<script type='text/javascript'>alert('Username is already existed! Please try again.');</script>";
-  unset($_SESSION['status']);
-}
-?>

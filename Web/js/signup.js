@@ -5,16 +5,21 @@ function handleSubmit(e) {
     inputName: "name",
     inputAddress: "address",
     inputHub: 'disHub',
+    inputLatitude: 'latitude',
+    inputLongitude: 'longitude',
     inputUsername: "username",
     inputPass1: "pass1", inputPass2: "pass2",
   }
 
   const nameBlock = document.getElementById('nameBlock')
   const addressBlock = document.getElementById('addressBlock')
+  const coordinateBlock = document.getElementById('coordinateBlock')
   const hubBlock = document.getElementById('hubBlock')
   if (hubBlock.hasChildNodes()) {
     delete ids['inputName']
     delete ids['inputAddress']
+    delete ids['inputLatitude']
+    delete ids['inputLongitude']
   } else {
     delete ids['inputHub']
   }
@@ -23,7 +28,7 @@ function handleSubmit(e) {
   for (const id in ids) {
     const text = document.getElementById(id).value
     if (text === '') {
-      document.getElementById(ids[id]).style.visibility = 'visible'
+      document.getElementById(ids[id]).style.visibility = 'visible';
       flag = false;
     } else {
       document.getElementById(ids[id]).style.visibility = 'hidden'
@@ -76,13 +81,14 @@ function changeUserType(id) {
 
   const nameBlock = document.getElementById('nameBlock')
   const addressBlock = document.getElementById('addressBlock')
+  const coordinateBlock = document.getElementById('coordinateBlock')
   const hubBlock = document.getElementById('hubBlock')
 
   if (id === "customer" || id === "vendor") {
     hubBlock.innerHTML = null;
     document.getElementById('inputUserType').value = id === "customer" ? 'customer' : 'vendor'
 
-    if (!nameBlock.hasChildNodes() && !addressBlock.hasChildNodes()) {
+    if (!nameBlock.hasChildNodes() && !addressBlock.hasChildNodes() && !coordinateBlock.hasChildNodes()) {
       const block1 = document.createElement('div')
       block1.className = "input-block"
       block1.innerHTML = `<span id='name' class='req' style="float:right;">* Require</span>
@@ -109,12 +115,38 @@ function changeUserType(id) {
                             </div>
                           </div>`;
 
+      const block3 = document.createElement("div")
+      block3.className = 'input-block'
+      block3.innerHTML = `<span id='latitude' class='req' style="float:left; margin-left: 10px;">* Require</span>
+                          <span id='longitude' class='req' style="float:right; margin-right: 10px;">* Require</span>
+
+                          <div style="clear:both;"></div>
+                          <div class='wrapperSplit1' style="float: left; margin-left: 10px">
+                            <div id='field6' class='input-control inside'>
+                              <input id='inputLatitude' type='text' placeholder=' ' name='latitude'
+                              onclick="addBorder('field6')"
+                              onBlur="rmvBorder('field6')">
+                              <label class='move-out'>Latitude</label>
+                            </div>
+                          </div>
+
+                          <div class='wrapperSplit1' style="float:right; margin-right: 10px">
+                            <div id='field7' class='input-control inside'>
+                              <input id='inputLongitude' type='text' placeholder=' ' name='longitude'
+                              onclick="addBorder('field7')"
+                              onBlur="rmvBorder('field7')">
+                              <label class='move-out'>Longitude</label>
+                            </div>
+                          </div>`
+
       nameBlock.appendChild(block1)
       addressBlock.appendChild(block2)
+      coordinateBlock.appendChild(block3);
     }
   } else {
     nameBlock.innerHTML = null;
     addressBlock.innerHTML = null;
+    coordinateBlock.innerHTML = null;
     document.getElementById('inputUserType').value = 'shipper'
 
     if (!hubBlock.hasChildNodes()) {
@@ -180,12 +212,7 @@ function getDropdownAttrs() {
   selectBtn = wrapper.querySelector(".select-btn"),
   searchInp = wrapper.querySelector("input"),
   options = wrapper.querySelector(".options");
-  let countries = ["Afghanistan", "Algeria", "Argentina", "Australia", "Bangladesh", "Belgium", "Bhutan",
-                   "Brazil", "Canada", "China", "Denmark", "Ethiopia", "Finland", "France", "Germany",
-                   "Hungary", "Iceland", "India", "Indonesia", "Iran", "Italy", "Japan", "Malaysia",
-                   "Maldives", "Mexico", "Morocco", "Nepal", "Netherlands", "Nigeria", "Norway", "Pakistan",
-                   "Peru", "Russia", "Romania", "South Africa", "Spain", "Sri Lanka", "Sweden", "Switzerland",
-                   "Thailand", "Turkey", "Uganda", "Ukraine", "United States", "United Kingdom", "Vietnam"];
+  let countries = ["Lotty", "Ainmall", "Viva", "Mete", "Ingram", "Reddis", "Aeflow", "Mona", "Micro", "Wedo"];
 
   return {wrapper, selectBtn, searchInp, options, countries}
 }

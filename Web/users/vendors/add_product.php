@@ -1,14 +1,13 @@
 <?php
+require 'vendor_auth.php';
+require "../../nguyen_config_mysql.php";
+require "../../nguyen_config_mongodb.php";
 
-session_start();
-
-require "config_mongodb.php";
-require "config_mysql.php";
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $pdo->beginTransaction();
     $stmt = $pdo->prepare("INSERT INTO `Product` (VendorID, ProductName,ProductDescription, Price, Status) VALUES (:vendor_id, :product_name, :product_description, :product_price, 'AVAILABLE')");
-    $stmt->bindParam(':vendor_id', $_SESSION['id']);
+    $stmt->bindParam(':vendor_id', $_SESSION['user']['id']);
     $stmt->bindParam(':product_name', $_POST['product_name']);
     $stmt->bindParam(':product_description', $_POST['product_description']);
     $stmt->bindParam(':product_price', $_POST['product_price']);

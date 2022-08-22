@@ -13,8 +13,9 @@
     }
     if (isExist()) {
       $_SESSION['user']['type'] = htmlentities($_POST["userType"], ENT_QUOTES);
-      header("Location: home.php");
+      header("Location: index.php");
     } else {
+      $_SESSION['status'] = "User is already exist";
       header("Location: login.php");
     }
   } else {
@@ -25,7 +26,6 @@
 
 <?php
 function isExist() {
-  // require_once 'config_mysql.php';
   require_once 'nguyen_config_mysql.php';
 
   echo "User Type: ", $_POST['userType'], "<br>";
@@ -33,12 +33,14 @@ function isExist() {
   echo "Password: ", $_POST['pass1'], "<br>";
   echo "Full data: ", implode(" ", $_POST), "<br>";
 
-  $hashPassword = password_hash($_POST['pass1'], PASSWORD_DEFAULT);
-  $sql = "SELECT password FROM users WHERE username='".$_POST['username']."'";
-  $result = $conn->query($sql);
+  $type = ucfirst($_POST['userType']);
+  $sql = "SELECT * FROM `".$_POST['userType']."` WHERE ".$type."Username = ?";
+  $result = $pdo->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
+  $result->execute(array(htmlentities($_POST['username'])));
 
-  while($row = $result->fetch_assoc()) {
-    if (password_verify($_POST['pass1'], $row['password'])) {
+  while($row = $result->fetch()) {
+    if (password_verify($_POST['pass1'], $row["".$type."Password"])) {
+        $_SESSION['user']['id'] = $row["".$type."ID"];
         return TRUE;
     } else {
         return FALSE;

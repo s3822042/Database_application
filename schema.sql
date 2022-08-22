@@ -6,7 +6,7 @@ CREATE TABLE IF NOT EXISTS Vendor(
     VendorName varchar(50) NOT NULL,
     VendorAddress varchar(50) UNIQUE NOT NULL,
     VendorUsername varchar(50) UNIQUE NOT NULL,
-    VendorPassword varchar(50) NOT NULL,
+    VendorPassword varchar(255) NOT NULL,
     Latitude FLOAT NOT NULL,
     Longitude FLOAT NOT NULL,
     PRIMARY KEY (VendorID)
@@ -17,7 +17,7 @@ CREATE TABLE IF NOT EXISTS Customer(
     CustomerName varchar(50) NOT NULL,
     CustomerAddress varchar(50) UNIQUE NOT NULL,
     CustomerUsername varchar(50) UNIQUE NOT NULL,
-    CustomerPassword varchar(50) NOT NULL,
+    CustomerPassword varchar(255) NOT NULL,
     Latitude FLOAT NOT NULL,
     Longitude FLOAT NOT NULL,
     PRIMARY KEY (CustomerID)
@@ -35,7 +35,7 @@ CREATE TABLE IF NOT EXISTS Hub(
 CREATE TABLE IF NOT EXISTS Shipper(
     ShipperID int NOT NULL AUTO_INCREMENT,
     ShipperUsername varchar(50) NOT NULL,
-    ShipperPassword varchar(50) NOT NULL,
+    ShipperPassword varchar(255) NOT NULL,
     HubID int,
     PRIMARY KEY (ShipperID),
     FOREIGN KEY (HubID) REFERENCES Hub(HubID)
@@ -73,4 +73,4 @@ CREATE TABLE IF NOT EXISTS `Product` (
   PRIMARY KEY (`ProductID`),
   KEY `VendorID` (`VendorID`),
   CONSTRAINT `orders_ibfk_` FOREIGN KEY (`VendorID`) REFERENCES `Vendor` (`VendorID`)
-) ENGINE=InnoDB;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci

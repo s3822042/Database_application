@@ -11,6 +11,7 @@
     } else if ($type == "vendor") {
       include "users/vendor.php";
     }
+    echo $_SESSION['user']['id'];
   } else {
     header("Location: login.php");
   }

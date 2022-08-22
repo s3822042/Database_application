@@ -1,3 +1,7 @@
+<?php
+  session_start();
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -65,3 +69,11 @@
 
 </body>
 </html>
+
+
+<?php
+if (isset($_SESSION['status'])) {
+  echo "<script type='text/javascript'>alert('Username or Password is incorrect! Please try again.');</script>";
+  unset($_SESSION['status']);
+}
+?>

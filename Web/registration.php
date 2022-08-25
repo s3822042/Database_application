@@ -31,7 +31,6 @@ function isSuccess() {
 
 
 
-
   $type = ucfirst($_POST['userType']);
   $sql = "SELECT ".$type."Username FROM $_POST[userType] WHERE ".$type."Username = ?";
   $result = $pdo->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
@@ -82,8 +81,13 @@ function signup_shipper($pdo) {
     while($row = $result->fetch()) {
       $hashPassword = password_hash($password_entity, PASSWORD_DEFAULT);
       $sql = "INSERT INTO $_POST[userType] ($acc_username, $acc_password, $acc_dishub) VALUES(?, ?, ?)";
+
       $result = $pdo->prepare($sql);
-      $result->execute(array($username_entity, $hashPassword, (int) $row['HubID']));
+      $result->bindParam(1, $username_entity);
+      $result->bindParam(2, $hashPassword);
+      $result->bindParam(3, $row['HubID'], PDO::PARAM_INT);
+      $result->execute();
+
       return TRUE;
     }
   } catch (PDOException $e) {
@@ -113,7 +117,13 @@ function signup_cus_ven($pdo) {
   try {
     $hashPassword = password_hash($password_entity, PASSWORD_DEFAULT);
     $result = $pdo->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
-    $result->execute(array($name_entity, $address_entity, $username_entity, $hashPassword, (int) $latitude_entity, (int) $longitude_entity));
+    $result->bindParam(1, $name_entity);
+    $result->bindParam(2, $address_entity);
+    $result->bindParam(3, $username_entity);
+    $result->bindParam(4, $hashPassword);
+    $result->bindParam(5, $latitude_entity, PDO::PARAM_INT);
+    $result->bindParam(6, $longitude_entity, PDO::PARAM_INT);
+    $result->execute();
   } catch (PDOException $e) {
     echo "Connection failed: " . $e->getMessage();
     return FALSE;

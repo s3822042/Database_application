@@ -1,6 +1,6 @@
 <?php
 require 'vendor/autoload.php';
-echo extension_loaded("mongodb") ? "loaded\n" : "not loaded\n";
+// echo extension_loaded("mongodb") ? "loaded\n" : "not loaded\n";
 $mongodb_uri = "mongodb://localhost:27017";
 
 try {

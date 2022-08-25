@@ -36,7 +36,8 @@ function isExist() {
   $type = ucfirst($_POST['userType']);
   $sql = "SELECT * FROM `".$_POST['userType']."` WHERE ".$type."Username = ?";
   $result = $pdo->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
-  $result->execute(array(htmlentities($_POST['username'])));
+  $result->bindParam(1, htmlentities($_POST['username']));
+  $result->execute();
 
   while($row = $result->fetch()) {
     if (password_verify($_POST['pass1'], $row["".$type."Password"])) {

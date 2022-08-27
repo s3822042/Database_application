@@ -1,10 +1,10 @@
 <?php
 require 'vendor_auth.php';
-require "../../nguyen_config_mysql.php";
-require "../../nguyen_config_mongodb.php";
+require "../../config_mysql.php";
+require "../../config_mongodb.php";
 
 
-  $product_id = 7;
+  $product_id = 1;
   $sql = "SELECT * FROM product WHERE ProductID = $product_id";
   $result = $pdo->query($sql);
 
@@ -29,10 +29,10 @@ require "../../nguyen_config_mongodb.php";
       $product_id = array('_id' => (int) $row['ProductID']);
       $extra_fields = array_merge($product_id, $extra_fields);
       try {
-        $cursor = $product_extras->deleteOne(['_id' => $row['ProductID']]);
-        $cursor = $product_extras->insertOne($extra_fields);
+        // $cursor = $product_extras->deleteOne(['_id' => $row['ProductID']]);
+        // $cursor = $product_extras->insertOne($extra_fields);
 
-          // $cursor = $product_extras->updateOne(['_id' => $row['ProductID']], ['$set' => $extra_fields], ['']);
+          $cursor = $product_extras->updateOne(['_id' => $row['ProductID']], ['$set' => $extra_fields], ['']);
 
       } catch (MongoDb\Exception\Exception $e) {
           $createErr = 'Extra fields not added successfully';

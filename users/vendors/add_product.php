@@ -1,7 +1,7 @@
 <?php
 require 'vendor_auth.php';
-require "../../nguyen_config_mysql.php";
-require "../../nguyen_config_mongodb.php";
+require "../../config_mysql.php";
+require "../../config_mongodb.php";
 
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {

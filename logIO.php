@@ -26,7 +26,7 @@
 
 <?php
 function isExist() {
-  require_once 'nguyen_config_mysql.php';
+  require_once 'config_mysql.php';
 
   echo "User Type: ", $_POST['userType'], "<br>";
   echo "Username: ", $_POST['username'], "<br>";

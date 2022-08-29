@@ -73,4 +73,4 @@ CREATE TABLE IF NOT EXISTS `Product` (
   PRIMARY KEY (`ProductID`),
   KEY `VendorID` (`VendorID`),
   CONSTRAINT `orders_ibfk_` FOREIGN KEY (`VendorID`) REFERENCES `Vendor` (`VendorID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+) ENGINE=InnoDB;

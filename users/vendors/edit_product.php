@@ -3,17 +3,42 @@ require 'vendor_auth.php';
 require "../../config_mysql.php";
 require "../../config_mongodb.php";
 
+// Bug: Delete key mongodb
 
-  $product_id = 1;
-  $sql = "SELECT * FROM product WHERE ProductID = $product_id";
-  $result = $pdo->query($sql);
 
-  $row = $result->fetch();
-  $mongo = $product_extras->findOne(['_id' => $row['ProductID']]);
-  $data = $mongo->jsonSerialize();
+  if (isset($_SESSION['productID'])) {
+    $product_id = (int) $_SESSION['productID'];
+    $sql = "SELECT * FROM product WHERE ProductID = $product_id";
+    $result = $pdo->query($sql);
+    $row = $result->fetch();
 
+    $mongo = $product_extras->findOne(['_id' => $product_id]);
+    $data = null;
+
+    if ($mongo !== null) {
+      $data = $mongo->jsonSerialize();
+    }
+  }
+
+  if (isset($_POST['editData'])) {
+    $product_id = $_POST['productID'];
+    $_SESSION['productID'] = $product_id;
+
+    $sql = "SELECT * FROM product WHERE ProductID = $product_id";
+    $result = $pdo->query($sql);
+    $row = $result->fetch();
+
+    $mongo = $product_extras->findOne(['_id' => $row['ProductID']]);
+    $data = null;
+
+    if ($mongo !== null) {
+      $data = $mongo->jsonSerialize();
+    }
+  }
 
   if (isset($_POST['submit'])) {
+    $product_id = (int) $_SESSION['productID'];
+
     if ($row['Status'] == 'AVAILABLE') {
       $stmt = $pdo->prepare("UPDATE `Product` SET ProductName = :product_name, ProductDescription = :product_description, Price = :product_price WHERE ProductID = $product_id");
       $stmt->bindParam(':product_name', $_POST['product_name']);
@@ -29,10 +54,10 @@ require "../../config_mongodb.php";
       $product_id = array('_id' => (int) $row['ProductID']);
       $extra_fields = array_merge($product_id, $extra_fields);
       try {
-        // $cursor = $product_extras->deleteOne(['_id' => $row['ProductID']]);
-        // $cursor = $product_extras->insertOne($extra_fields);
+        $cursor = $product_extras->deleteOne(['_id' => $row['ProductID']]);
+        $cursor = $product_extras->insertOne($extra_fields);
 
-          $cursor = $product_extras->updateOne(['_id' => $row['ProductID']], ['$set' => $extra_fields], ['']);
+          // $cursor = $product_extras->updateOne(['_id' => $row['ProductID']], ['$set' => $extra_fields], ['']);
 
       } catch (MongoDb\Exception\Exception $e) {
           $createErr = 'Extra fields not added successfully';
@@ -40,8 +65,8 @@ require "../../config_mongodb.php";
       header("Refresh:0");
     }
   }
-
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -62,6 +87,12 @@ require "../../config_mongodb.php";
             <form name="myForm" enctype="multipart/form-data" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" target="_self" method="POST">
                 <div class="mb-5">
                     <label for="name" class="mb-3 block text-base font-medium text-[#07074D]">
+                        Product ID
+                    </label>
+                    <input type="text" id="name" value="<?php echo $row['ProductID'];?>" readonly class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md" required />
+                </div>
+                <div class="mb-5">
+                    <label for="name" class="mb-3 block text-base font-medium text-[#07074D]">
                         Product Name
                     </label>
                     <input type="text" name="product_name" id="name" value="<?php echo $row['ProductName'];?>" placeholder="Product Name" class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md" required />
@@ -80,20 +111,23 @@ require "../../config_mongodb.php";
                 </div>
                 <div id="additionalField" class="mb-5">
                   <?php
-                    foreach ($data as $key => $value) {
-                      if (strcmp($key, "_id") != 0) {
-                        echo "
-                        <div class='rounded w-full flex-col flex rounded-md bg-white py-3 my-4 px-6 border border-[#e0e0e0]'>
-                          <input class='form-control' type='text' value='$key' name='field[]' pattern='^[A-Za-z0-9-_ ]*$' placeholder='Field Name'>
-                        </div>
-                        <div class='rounded w-full flex-col flex rounded-md bg-white py-3 my-4 px-6 border border-[#e0e0e0]'>
-                          <input class='form-control' type='text' value='$value' name='val[]' pattern='^[A-Za-z0-9-\/\\.,_%#&amp; ]*$' placeholder='Value'>
-                        </div>
-                        ";
+                    if ($data !== null) {
+                      foreach ($data as $key => $value) {
+                        if (strcmp($key, "_id") != 0) {
+                          echo "
+                          <div class='rounded w-full flex-col flex rounded-md bg-white py-3 my-4 px-6 border border-[#e0e0e0]'>
+                            <input class='form-control' type='text' value='$key' name='field[]' pattern='^[A-Za-z0-9-_ ]*$' placeholder='Field Name'>
+                          </div>
+                          <div class='rounded w-full flex-col flex rounded-md bg-white py-3 my-4 px-6 border border-[#e0e0e0]'>
+                            <input class='form-control' type='text' value='$value' name='val[]' pattern='^[A-Za-z0-9-\/\\.,_%#&amp; ]*$' placeholder='Value'>
+                          </div>
+                          ";
+                        }
                       }
                     }
                   ?>
                 </div>
+                <input type="button" value="+" onClick="addInput('additionalField');">
                 <div>
                     <button name="submit" class="hover:shadow-form rounded-md bg-[#6A64F1] py-3 px-8 text-base font-semibold text-white outline-none">
                         Edit Product
@@ -102,6 +136,8 @@ require "../../config_mongodb.php";
             </form>
         </div>
     </div>
+
+    <script src="../../js/script.js"></script>
 </body>
 
 </html>

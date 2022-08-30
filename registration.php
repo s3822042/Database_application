@@ -121,8 +121,8 @@ function signup_cus_ven($pdo) {
     $result->bindParam(2, $address_entity);
     $result->bindParam(3, $username_entity);
     $result->bindParam(4, $hashPassword);
-    $result->bindParam(5, $latitude_entity, PDO::PARAM_INT);
-    $result->bindParam(6, $longitude_entity, PDO::PARAM_INT);
+    $result->bindParam(5, $latitude_entity, PDO::PARAM_STR);
+    $result->bindParam(6, $longitude_entity, PDO::PARAM_STR);
     $result->execute();
   } catch (PDOException $e) {
     echo "Connection failed: " . $e->getMessage();

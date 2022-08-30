@@ -2,69 +2,77 @@
 require 'vendor_auth.php';
 require "../../config_mysql.php";
 require "../../config_mongodb.php";
+require "../homeNav.php";
 
-// Bug: Delete key mongodb
+if (isset($_SESSION['productID'])) {
+  $product_id = (int) $_SESSION['productID'];
+  $sql = "SELECT * FROM product WHERE ProductID = $product_id";
+  $result = $pdo->query($sql);
+  $row = $result->fetch();
 
+  $mongo = $product_extras->findOne(['_id' => $product_id]);
+  $data = null;
 
-  if (isset($_SESSION['productID'])) {
-    $product_id = (int) $_SESSION['productID'];
-    $sql = "SELECT * FROM product WHERE ProductID = $product_id";
-    $result = $pdo->query($sql);
-    $row = $result->fetch();
-
-    $mongo = $product_extras->findOne(['_id' => $product_id]);
-    $data = null;
-
-    if ($mongo !== null) {
-      $data = $mongo->jsonSerialize();
-    }
+  if ($mongo !== null) {
+    $data = $mongo->jsonSerialize();
   }
+}
 
-  if (isset($_POST['editData'])) {
-    $product_id = $_POST['productID'];
-    $_SESSION['productID'] = $product_id;
+if (isset($_POST['editData'])) {
+  $product_id = $_POST['productID'];
+  $_SESSION['productID'] = $product_id;
 
-    $sql = "SELECT * FROM product WHERE ProductID = $product_id";
-    $result = $pdo->query($sql);
-    $row = $result->fetch();
+  $sql = "SELECT * FROM product WHERE ProductID = $product_id";
+  $result = $pdo->query($sql);
+  $row = $result->fetch();
 
-    $mongo = $product_extras->findOne(['_id' => $row['ProductID']]);
-    $data = null;
+  $mongo = $product_extras->findOne(['_id' => $row['ProductID']]);
+  $data = null;
 
-    if ($mongo !== null) {
-      $data = $mongo->jsonSerialize();
-    }
+  if ($mongo !== null) {
+    $data = $mongo->jsonSerialize();
   }
+}
 
-  if (isset($_POST['submit'])) {
-    $product_id = (int) $_SESSION['productID'];
+if (isset($_POST['submit'])) {
+  $product_id = (int) $_SESSION['productID'];
 
-    if ($row['Status'] == 'AVAILABLE') {
-      $stmt = $pdo->prepare("UPDATE `Product` SET ProductName = :product_name, ProductDescription = :product_description, Price = :product_price WHERE ProductID = $product_id");
-      $stmt->bindParam(':product_name', $_POST['product_name']);
-      $stmt->bindParam(':product_description', $_POST['product_description']);
-      $stmt->bindParam(':product_price', $_POST['product_price']);
-      $result = $stmt->execute();
+  if ($row['Status'] == 'AVAILABLE') {
+    $stmt = $pdo->prepare("UPDATE `Product` SET ProductName = :product_name, ProductDescription = :product_description, Price = :product_price WHERE ProductID = $product_id");
+    $stmt->bindParam(':product_name', $_POST['product_name']);
+    $stmt->bindParam(':product_description', $_POST['product_description']);
+    $stmt->bindParam(':product_price', $_POST['product_price']);
+    $result = $stmt->execute();
 
-      // print_r($_POST['field']);
-      // echo "<br>";
-      // print_r($_POST['val']);
+    if (isset($_POST['field']) && isset($_POST['val'])) {
+      $prevData = [];
+      if(isset($_SESSION['extra'])) {
+        $prevData = $_SESSION['extra'];
+      }
 
       $extra_fields = array_combine($_POST['field'], $_POST['val']);
       $product_id = array('_id' => (int) $row['ProductID']);
+      unset($extra_fields['']);
+
       $extra_fields = array_merge($product_id, $extra_fields);
       try {
         $cursor = $product_extras->deleteOne(['_id' => $row['ProductID']]);
         $cursor = $product_extras->insertOne($extra_fields);
 
-          // $cursor = $product_extras->updateOne(['_id' => $row['ProductID']], ['$set' => $extra_fields], ['']);
+        $check = $product_extras->findOne($product_id)->jsonSerialize();
+        $count = 0;
+        foreach ($check as $key => $value) {$count++;}
+        if ($count == 1) {
+          $product_extras->deleteOne($product_id);
+        }
 
       } catch (MongoDb\Exception\Exception $e) {
           $createErr = 'Extra fields not added successfully';
       }
-      header("Refresh:0");
     }
+    header("Refresh:0");
   }
+}
 ?>
 
 <!DOCTYPE html>
@@ -112,6 +120,8 @@ require "../../config_mongodb.php";
                 <div id="additionalField" class="mb-5">
                   <?php
                     if ($data !== null) {
+                      $len = count((array)$data) - 1;
+                      $array = [];
                       foreach ($data as $key => $value) {
                         if (strcmp($key, "_id") != 0) {
                           echo "
@@ -122,8 +132,10 @@ require "../../config_mongodb.php";
                             <input class='form-control' type='text' value='$value' name='val[]' pattern='^[A-Za-z0-9-\/\\.,_%#&amp; ]*$' placeholder='Value'>
                           </div>
                           ";
+                          $array[$key] = $value;
                         }
                       }
+                      $_SESSION['extra'] = $array;
                     }
                   ?>
                 </div>

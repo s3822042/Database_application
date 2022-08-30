@@ -35,15 +35,6 @@
         <a href="users/vendors/add_product.php" class="btn btn-primary make-bottom">Add a product</a>
       </div>
     </div>
-    <div class="card text-center align">
-      <div class="card-body-custom">
-        <h5 class="card-title">Edit a product</h5>
-        <div class="b">
-          <p class="card-text">allow the logged-in vendor to edit one product. A product cannot be edited if there it has been purchased by a customer and the purchase has not been finished yet. See below for more details</p>
-        </div>
-        <a href="users/vendors/edit_product.php" class="btn btn-primary make-bottom">Edit a product</a>
-      </div>
-    </div>
   </div>
 
 </body>

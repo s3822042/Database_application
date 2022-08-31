@@ -61,7 +61,7 @@
             <div style="clear:both;"></div>
             <div class='wrapperSplit1' style="float: left; margin-left: 10px">
               <div id='field6' class='input-control inside'>
-                <input id='inputLatitude' type='number' placeholder=' ' name='latitude'
+                <input id='inputLatitude' type='number' step='any' placeholder=' ' name='latitude'
                 onclick="addBorder('field6')"
                 onBlur="rmvBorder('field6')">
                 <label class='move-out'>Latitude</label>
@@ -70,7 +70,7 @@
 
             <div class='wrapperSplit1' style="float:right; margin-right: 10px">
               <div id='field7' class='input-control inside'>
-                <input id='inputLongitude' type='number' placeholder=' ' name='longitude'
+                <input id='inputLongitude' type='number' step='any' placeholder=' ' name='longitude'
                 onclick="addBorder('field7')"
                 onBlur="rmvBorder('field7')">
                 <label class='move-out'>Longitude</label>

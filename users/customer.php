@@ -51,7 +51,7 @@
         <div class="b">
           <p class="card-text">the customer enters a distance (for example, 10km), then the system returns a list of vendors whose distances to the customer's location are within the entered value</p>
         </div>
-        <a href="#" class="btn btn-primary make-bottom">Search vendors</a>
+        <a href="users/customer/search_vendor.php" class="btn btn-primary make-bottom">Search vendors</a>
       </div>
     </div>
     <div class="card text-center align">

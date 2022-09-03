@@ -1,9 +1,7 @@
 
 <?php
-require "../config_mongo_vananh.php";
-require "config.php";
-require "func_.php";
-require "mysql_queries.php";
+require "../../config_mysql.php";
+require "../../config_mongodb.php";
 
 $total_pages = (int)$pdo->query($count_product)->fetch(PDO::FETCH_ASSOC)["COUNT(*)"];
 
@@ -198,6 +196,11 @@ if ($stmt = $pdo->prepare($query)) {
 						<?php if ($row['haveExtraField'] == '1'): ?>
 						<td><a href="product_details.php?productID=<?php echo $row['ProductID']?>">More</td>
 						<?php endif; ?>
+						<td>
+						<form  method="post">
+						<input type="submit" name="buy" value="Buy" >
+						</form>
+						</td>
 					</tr>
 				<?php endwhile; ?>
 		</table>

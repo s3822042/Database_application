@@ -9,7 +9,9 @@ CREATE TABLE IF NOT EXISTS Vendor(
     VendorPassword varchar(255) NOT NULL,
     Latitude FLOAT NOT NULL,
     Longitude FLOAT NOT NULL,
-    PRIMARY KEY (VendorID)
+    HubID int,
+    PRIMARY KEY (VendorID),
+    FOREIGN KEY (HubID) REFERENCES Hub(HubID)
 ) ENGINE = InnoDB;
 
 CREATE TABLE IF NOT EXISTS Customer(
@@ -20,7 +22,9 @@ CREATE TABLE IF NOT EXISTS Customer(
     CustomerPassword varchar(255) NOT NULL,
     Latitude FLOAT NOT NULL,
     Longitude FLOAT NOT NULL,
-    PRIMARY KEY (CustomerID)
+    HubID int,
+    PRIMARY KEY (CustomerID),
+    FOREIGN KEY (HubID) REFERENCES Hub(HubID)
 ) ENGINE = InnoDB;
 
 CREATE TABLE IF NOT EXISTS Hub(
@@ -28,7 +32,7 @@ CREATE TABLE IF NOT EXISTS Hub(
     HubName varchar(50) NOT NULL,
     HubAddress varchar(50) NOT NULL,
     Latitude FLOAT NOT NULL,
-    Longitude FLOAT NOT NULL,
+    Longitude FLOAT NOT NU LL,
     PRIMARY KEY (HubID)
 ) ENGINE = InnoDB;
 
@@ -47,7 +51,6 @@ CREATE TABLE IF NOT EXISTS Orders(
     VendorID int,
     ShipperID int,
     HubID int,
-    CreatedTime TIMESTAMP NOT NULL,
     OrderStatus varchar(50) DEFAULT 'Ready',
     PRIMARY KEY (OrderID),
     FOREIGN KEY (CustomerID) REFERENCES Customer(CustomerID),
@@ -64,13 +67,13 @@ CREATE TABLE IF NOT EXISTS OrderDetail(
 ) ENGINE = InnoDB;
 
 CREATE TABLE IF NOT EXISTS `Product` (
-  `ProductID` int NOT NULL AUTO_INCREMENT,
-  `ProductName` varchar(255) NOT NULL,
-  `ProductDescription` varchar(255) NOT NULL,
-  `VendorID` int DEFAULT NULL,
-  `Status` varchar(255),
-  `Price` int DEFAULT NULL,
-  PRIMARY KEY (`ProductID`),
-  KEY `VendorID` (`VendorID`),
-  CONSTRAINT `orders_ibfk_` FOREIGN KEY (`VendorID`) REFERENCES `Vendor` (`VendorID`)
-) ENGINE=InnoDB;
+    `ProductID` int NOT NULL AUTO_INCREMENT,
+    `ProductName` varchar(255) NOT NULL,
+    `ProductDescription` varchar(255) NOT NULL,
+    `VendorID` int DEFAULT NULL,
+    `Status` varchar(255),
+    `Price` int DEFAULT NULL,
+    PRIMARY KEY (`ProductID`),
+    KEY `VendorID` (`VendorID`),
+    CONSTRAINT `orders_ibfk_` FOREIGN KEY (`VendorID`) REFERENCES `Vendor` (`VendorID`)
+) ENGINE = InnoDB;

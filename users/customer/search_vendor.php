@@ -9,16 +9,22 @@
     $_SESSION['submitted'] = 1;
     $_SESSION['distance'] = $_POST['distance'];
 
+    // Get a customer record based on ID
     $currentDistance = "SELECT CustomerID, Latitude, Longitude FROM customer WHERE CustomerID = $customer_id";
     $result = $pdo->query($currentDistance);
     $row = $result->fetch();
 
-    $otherDistance = "SELECT VendorID, ST_Distance_Sphere(POINT($row[Latitude], $row[Longitude]), POINT (Latitude, Longitude) ) FROM vendor";
+    // 3d Sphere Distance
+    // $otherDistance = "SELECT VendorID, ST_Distance_Sphere(POINT($row[Latitude], $row[Longitude]), POINT (Latitude, Longitude) ) FROM vendor";
+
+    // Euclidean distance
+    $otherDistance = "SELECT VendorID, SQRT(POW(latitude - $row[Latitude], 2) + POW(longitude - $row[Longitude], 2)) FROM vendor;";
     $result = $pdo->query($otherDistance);
 
+    // Append all distances into the array
     $array = [];
     while ($row = $result->fetch()) {
-      $castKM = ($row[1] / 1000);
+      $castKM = $row[1]; // Is it required to cast to other unit ? Ex. ($row[1] / 1000)
       if ( $castKM <= $_POST['distance'] ) {
         $array[$row['VendorID']] = $castKM;
         // echo "VendorID: ", $row['VendorID'], " ------> ", $castKM, "<br>";
@@ -72,7 +78,7 @@
             <div class="container mx-auto">
                 <div class="grid grid-cols-4 gap-6">
                     <?php
-                      if ((int) $_SESSION['submitted']) {
+                      if ((int) $_SESSION['submitted'] == 1) {
                         foreach($array as $key => $value) {
                           $data = number_format((float) $value, 2, '.', '');
                           echo "<div
@@ -83,6 +89,8 @@
                                     </div>
                                 </div>";
                         }
+                        unset($_SESSION['submitted']);
+                        unset($_SESSION['distance']);
                       }
                     ?>
                 </div>

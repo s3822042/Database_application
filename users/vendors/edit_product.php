@@ -35,14 +35,8 @@ if (isset($_POST['editData'])) {
 }
 
 if (isset($_POST['submit'])) {
-  $product_id = (int) $_SESSION['productID'];
-
   if ($row['Status'] == 'AVAILABLE') {
-    $stmt = $pdo->prepare("UPDATE `Product` SET ProductName = :product_name, ProductDescription = :product_description, Price = :product_price WHERE ProductID = $product_id");
-    $stmt->bindParam(':product_name', $_POST['product_name']);
-    $stmt->bindParam(':product_description', $_POST['product_description']);
-    $stmt->bindParam(':product_price', $_POST['product_price']);
-    $result = $stmt->execute();
+    $hasExtra = 1;
 
     if (isset($_POST['field']) && isset($_POST['val'])) {
       $prevData = [];
@@ -64,12 +58,20 @@ if (isset($_POST['submit'])) {
         foreach ($check as $key => $value) {$count++;}
         if ($count == 1) {
           $product_extras->deleteOne($product_id);
+          $hasExtra = 0;
         }
-
       } catch (MongoDb\Exception\Exception $e) {
           $createErr = 'Extra fields not added successfully';
       }
     }
+    
+    $product_id = (int) $_SESSION['productID'];
+    $stmt = $pdo->prepare("UPDATE `Product` SET ProductName = :product_name, ProductDescription = :product_description, Price = :product_price, haveExtraField = $hasExtra WHERE ProductID = $product_id");
+    $stmt->bindParam(':product_name', $_POST['product_name']);
+    $stmt->bindParam(':product_description', $_POST['product_description']);
+    $stmt->bindParam(':product_price', $_POST['product_price']);
+    $result = $stmt->execute();
+
     header("Refresh:0");
   }
 }

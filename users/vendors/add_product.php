@@ -7,7 +7,13 @@ require "../homeNav.php";
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $pdo->beginTransaction();
-    $stmt = $pdo->prepare("INSERT INTO `Product` (VendorID, ProductName,ProductDescription, Price, Status) VALUES (:vendor_id, :product_name, :product_description, :product_price, 'AVAILABLE')");
+
+    $hasExtra = 0;
+    if (isset($_POST['field']) && isset($_POST['val'])) {
+      $hasExtra = 1;
+    }
+
+    $stmt = $pdo->prepare("INSERT INTO `Product` (VendorID, ProductName,ProductDescription, Price, Status, haveExtraField, added_date) VALUES (:vendor_id, :product_name, :product_description, :product_price, 'AVAILABLE', $hasExtra, now())");
     $stmt->bindParam(':vendor_id', $_SESSION['user']['id']);
     $stmt->bindParam(':product_name', $_POST['product_name']);
     $stmt->bindParam(':product_description', $_POST['product_description']);

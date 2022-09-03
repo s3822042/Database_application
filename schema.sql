@@ -59,21 +59,16 @@ CREATE TABLE IF NOT EXISTS Orders(
     FOREIGN KEY (HubID) REFERENCES Hub(HubID)
 ) ENGINE = InnoDB;
 
-CREATE TABLE IF NOT EXISTS OrderDetail(
-    OrderID int,
-    ProductID int,
-    Amount int,
-    FOREIGN KEY (OrderID) REFERENCES Orders(OrderID)
-) ENGINE = InnoDB;
 
-CREATE TABLE IF NOT EXISTS `Product` (
-    `ProductID` int NOT NULL AUTO_INCREMENT,
-    `ProductName` varchar(255) NOT NULL,
-    `ProductDescription` varchar(255) NOT NULL,
-    `VendorID` int DEFAULT NULL,
-    `Status` varchar(255),
-    `Price` int DEFAULT NULL,
-    PRIMARY KEY (`ProductID`),
-    KEY `VendorID` (`VendorID`),
-    CONSTRAINT `orders_ibfk_` FOREIGN KEY (`VendorID`) REFERENCES `Vendor` (`VendorID`)
-) ENGINE = InnoDB;
+CREATE TABLE IF NOT EXISTS Product (
+  ProductID int NOT NULL AUTO_INCREMENT,
+  ProductName varchar(255) NOT NULL,
+  ProductDescription varchar(255) NOT NULL,
+  VendorID int DEFAULT NULL,
+  Status varchar(255),
+  Price int DEFAULT NULL,
+  haveExtraField varchar(255),
+  added_date DATE,
+  PRIMARY KEY (ProductID),
+  FOREIGN KEY (VendorID) REFERENCES Vendor(VendorID)
+) ENGINE=InnoDB;

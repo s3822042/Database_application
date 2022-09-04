@@ -1,6 +1,6 @@
 <?php
 require 'vendor_auth.php';
-require "../../config_mysql.php";
+require "config_mysql.php";
 require "../../config_mongodb.php";
 require "../homeNav.php";
 
@@ -64,7 +64,7 @@ if (isset($_POST['submit'])) {
           $createErr = 'Extra fields not added successfully';
       }
     }
-    
+
     $product_id = (int) $_SESSION['productID'];
     $stmt = $pdo->prepare("UPDATE `Product` SET ProductName = :product_name, ProductDescription = :product_description, Price = :product_price, haveExtraField = $hasExtra WHERE ProductID = $product_id");
     $stmt->bindParam(':product_name', $_POST['product_name']);

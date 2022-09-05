@@ -65,7 +65,7 @@ CREATE TABLE IF NOT EXISTS Product (
   ProductName varchar(255) NOT NULL,
   ProductDescription varchar(255) NOT NULL,
   VendorID int DEFAULT NULL,
-  Status varchar(255),
+  ProductStatus varchar(255),
   Price int DEFAULT NULL,
   haveExtraField varchar(255),
   added_date DATE,

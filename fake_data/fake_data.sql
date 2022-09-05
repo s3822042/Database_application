@@ -108,7 +108,7 @@ insert into Orders (OrderID, CustomerID, VendorID, ShipperID, HubID, OrderStatus
 insert into Orders (OrderID, CustomerID, VendorID, ShipperID, HubID, OrderStatus) values (19, 19, 19, 19, 19, Ready);
 insert into Orders (OrderID, CustomerID, VendorID, ShipperID, HubID, OrderStatus) values (20, 20, 20, 20, 20, Ready);
 
--- pruducts
+-- products
 insert into Product (ProductID, ProductName, ProductDescription, VendorID, OrderStatus, Price, haveExtraField, added_date) values (1, 'Munchies Honey Sweet Trail Mix', 'Toys', 1, Ready, 630310, 'Human Resources', '17/4/2022');
 insert into Product (ProductID, ProductName, ProductDescription, VendorID, OrderStatus, Price, haveExtraField, added_date) values (2, 'Fennel - Seeds', 'Games', 2, Ready, 836969, 'Human Resources', '15/2/2022');
 insert into Product (ProductID, ProductName, ProductDescription, VendorID, OrderStatus, Price, haveExtraField, added_date) values (3, 'Danishes - Mini Raspberry', 'Books', 3, Ready, 551747, 'Accounting', '21/3/2022');

@@ -35,7 +35,7 @@ if (isset($_POST['editData'])) {
 }
 
 if (isset($_POST['submit'])) {
-  if ($row['Status'] == 'AVAILABLE') {
+  // if ($row['Status'] == 'AVAILABLE') {
     $hasExtra = 1;
 
     if (isset($_POST['field']) && isset($_POST['val'])) {
@@ -73,7 +73,7 @@ if (isset($_POST['submit'])) {
     $result = $stmt->execute();
 
     header("Refresh:0");
-  }
+  // }
 }
 ?>
 

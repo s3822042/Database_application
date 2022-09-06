@@ -13,7 +13,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
       $hasExtra = 1;
     }
 
-    $stmt = $pdo->prepare("INSERT INTO `Product` (VendorID, ProductName,ProductDescription, Price, Status, haveExtraField, added_date) VALUES (:vendor_id, :product_name, :product_description, :product_price, 'AVAILABLE', $hasExtra, now())");
+    $stmt = $pdo->prepare("INSERT INTO `Product` (VendorID, ProductName,ProductDescription, Price, haveExtraField, added_date) VALUES (:vendor_id, :product_name, :product_description, :product_price, $hasExtra, now())");
     $stmt->bindParam(':vendor_id', $_SESSION['user']['id']);
     $stmt->bindParam(':product_name', $_POST['product_name']);
     $stmt->bindParam(':product_description', $_POST['product_description']);

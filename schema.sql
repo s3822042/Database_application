@@ -7,7 +7,7 @@ CREATE TABLE IF NOT EXISTS Hub(
     HubName varchar(50) NOT NULL,
     HubAddress varchar(50) NOT NULL,
     Latitude FLOAT NOT NULL,
-    Longitude FLOAT NOT NU LL,
+    Longitude FLOAT NOT NULL,
     PRIMARY KEY (HubID)
 ) ENGINE = InnoDB;
 
@@ -46,6 +46,18 @@ CREATE TABLE IF NOT EXISTS Shipper(
     FOREIGN KEY (HubID) REFERENCES Hub(HubID)
 ) ENGINE = InnoDB;
 
+CREATE TABLE IF NOT EXISTS Product (
+  ProductID int NOT NULL AUTO_INCREMENT,
+  ProductName varchar(255) NOT NULL,
+  ProductDescription varchar(255) NOT NULL,
+  VendorID int DEFAULT NULL,
+  Price int DEFAULT NULL,
+  haveExtraField varchar(255),
+  added_date DATE,
+  PRIMARY KEY (ProductID),
+  FOREIGN KEY (VendorID) REFERENCES Vendor(VendorID)
+) ENGINE=InnoDB;
+
 CREATE TABLE IF NOT EXISTS Orders(
     OrderID int NOT NULL AUTO_INCREMENT,
     CustomerID int,
@@ -63,24 +75,16 @@ CREATE TABLE IF NOT EXISTS Orders(
 ) ENGINE = InnoDB;
 
 
-CREATE TABLE IF NOT EXISTS Product (
-  ProductID int NOT NULL AUTO_INCREMENT,
-  ProductName varchar(255) NOT NULL,
-  ProductDescription varchar(255) NOT NULL,
-  VendorID int DEFAULT NULL,
-  Price int DEFAULT NULL,
-  haveExtraField varchar(255),
-  added_date DATE,
-  PRIMARY KEY (ProductID),
-  FOREIGN KEY (VendorID) REFERENCES Vendor(VendorID)
-) ENGINE=InnoDB;
 
 
+DROP ROLE IF EXISTS 'vendor';
+DROP ROLE IF EXISTS 'customer';
+DROP ROLE IF EXISTS 'shipper';
+DROP USER IF EXISTS 'vendor'@'localhost';
+DROP USER IF EXISTS 'customer'@'localhost';
+DROP USER IF EXISTS 'shipper'@'localhost';
 
-
-
-
-CREATE ROLE 'vendor', ‘customer’, ‘shipper;
+CREATE ROLE 'vendor', 'customer', 'shipper';
 GRANT SELECT, INSERT ON lazadar.vendor TO 'vendor';
 GRANT SELECT, UPDATE, DELETE, INSERT ON lazadar.product TO 'vendor';
 
@@ -104,10 +108,10 @@ CREATE USER 'shipper'@'localhost' IDENTIFIED BY '1';
 GRANT 'shipper' TO 'shipper'@'localhost';
 
 
+SET GLOBAL log_bin_trust_function_creators = 1;
 
 
-
---funtion to find the nearest hub id from defined latitude and longtitude
+-- funtion to find the nearest hub id from defined latitude and longtitude
 DROP FUNCTION IF EXISTS nearest_hub;
 DELIMITER $$
 create function nearest_hub(_Latitude float, _Longitude float)
@@ -143,7 +147,7 @@ BEGIN
 END$$
 DELIMITER ;
 
---trigger customer
+-- trigger customer
 DROP TRIGGER IF EXISTS before_insert_customer;
 DELIMITER $$
 CREATE TRIGGER before_insert_customer
@@ -189,7 +193,7 @@ BEGIN
 
 END$$
 
---trigger update customer
+-- trigger update customer
 DROP TRIGGER IF EXISTS before_update_customer;
 DELIMITER $$
 CREATE TRIGGER before_update_customer
@@ -220,8 +224,8 @@ END$$
 
 -- store procedure transactions
 -- reference from http://geekdirt.com/blog/shared-and-exclusive-locks/
-DELIMITER $$
 DROP PROCEDURE IF EXISTS `sp_fail`;
+DELIMITER $$
 CREATE PROCEDURE `sp_fail`(
         IN `CustomerID` int(11),
         IN `VendorID` int(11) ,
@@ -234,7 +238,7 @@ BEGIN
     DECLARE CONTINUE HANDLER FOR SQLEXCEPTION SET `_rollback` = 1;
     START TRANSACTION;
 
-        SELECT * FROM product WHERE product.ProductID = ProductID LOCK IN SHARE MODE;
+        -- SELECT * FROM product WHERE product.ProductID = ProductID LOCK IN SHARE MODE;
         INSERT INTO orders (CustomerID, VendorID,ShipperID,HubID, ProductID)
         VALUES
         (CustomerID, VendorID, ShipperID, HubID, ProductID);
@@ -251,3 +255,27 @@ BEGIN
 END$$
 
 DELIMITER ;
+
+
+
+
+
+
+
+
+
+-- hub
+insert into Hub (HubID, HubName, HubAddress, Latitude, Longitude) values (1, 'Shayna Kennermann', '9855 Nelson Terrace', -0.6256517, 100.1233396);
+insert into Hub (HubID, HubName, HubAddress, Latitude, Longitude) values (2, 'Reena Ventum', '84 Maple Place', 51.4255297, -0.2050566);
+insert into Hub (HubID, HubName, HubAddress, Latitude, Longitude) values (3, 'Melania McClarence', '9186 Washington Street', -5.456385, 122.612261);
+insert into Hub (HubID, HubName, HubAddress, Latitude, Longitude) values (4, 'Rosaline Bosche', '013 Eastlawn Park', 21.857958, 111.982232);
+insert into Hub (HubID, HubName, HubAddress, Latitude, Longitude) values (5, 'Laurence Puddan', '2845 Waywood Road', 9.3295342, 124.6133794);
+insert into Hub (HubID, HubName, HubAddress, Latitude, Longitude) values (6, 'Garrot Appleton', '2077 Anzinger Junction', -6.9078713, -36.9111057);
+insert into Hub (HubID, HubName, HubAddress, Latitude, Longitude) values (7, 'Penny Cairns', '75983 Arkansas Park', 58.3493356, 13.8300629);
+insert into Hub (HubID, HubName, HubAddress, Latitude, Longitude) values (8, 'Christabel Twentyman', '91 Oriole Hill', 51.8610022, -8.334953);
+insert into Hub (HubID, HubName, HubAddress, Latitude, Longitude) values (9, 'Arnoldo Burnhill', '2537 Little Fleur Drive', 40.1791857, 44.4991029);
+insert into Hub (HubID, HubName, HubAddress, Latitude, Longitude) values (10, 'Dexter Rowth', '95 Paget Drive', 25.4105868, 68.418057);
+insert into Hub (HubID, HubName, HubAddress, Latitude, Longitude) values (11, 'Fenelia Dallander', '47026 Sunnyside Pass', -11.9148486, 43.4969735);
+insert into Hub (HubID, HubName, HubAddress, Latitude, Longitude) values (12, 'Amelie Schout', '5383 Hoepker Park', -6.86277, 109.6222698);
+insert into Hub (HubID, HubName, HubAddress, Latitude, Longitude) values (13, 'Libby Bertome', '836 Mitchell Alley', -12.3992902, -74.8659421);
+insert into Hub (HubID, HubName, HubAddress, Latitude, Longitude) values (14, 'Mirilla Mabbitt', '7 New Castle Point', 30.214647, 20.1402594);

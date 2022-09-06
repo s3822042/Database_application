@@ -78,7 +78,7 @@
             <div class="container mx-auto">
                 <div class="grid grid-cols-4 gap-6">
                     <?php
-                      if ((int) $_SESSION['submitted'] == 1) {
+                      if (isset($_SESSION['submitted'])) {
                         foreach($array as $key => $value) {
                           $data = number_format((float) $value, 2, '.', '');
                           echo "<div

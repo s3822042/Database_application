@@ -212,7 +212,20 @@ function getDropdownAttrs() {
   selectBtn = wrapper.querySelector(".select-btn"),
   searchInp = wrapper.querySelector("input"),
   options = wrapper.querySelector(".options");
-  let countries = ["Lotty", "Ainmall", "Viva", "Mete", "Ingram", "Reddis", "Aeflow", "Mona", "Micro", "Wedo"];
+  let countries = ["Shayna Kennermann",
+  "Reena Ventum",
+  "Melania McClarence",
+  "Rosaline Bosche",
+  "Laurence Puddan",
+  "Garrot Appleton",
+  "Penny Cairns",
+  "Christabel Twentyman",
+  "Arnoldo Burnhill",
+  "Dexter Rowth",
+  "Fenelia Dallander",
+  "Amelie Schout",
+  "Libby Bertome",
+  "Mirilla Mabbitt"]
 
   return {wrapper, selectBtn, searchInp, options, countries}
 }

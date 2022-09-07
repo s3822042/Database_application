@@ -1,6 +1,6 @@
 
 <?php
-require "../../config_mysql.php";
+require "config_mysql.php";
 require "../../config_mongodb.php";
 
 if (isset($_GET['productID'])) {

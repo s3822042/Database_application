@@ -2,7 +2,7 @@
 $server = "localhost";
 $port = "3306";
 $username = "root";
-$password = "";
+$password = "abc123";
 $database = "lazadar";
 
 

@@ -77,36 +77,6 @@ CREATE TABLE IF NOT EXISTS Orders(
 
 
 
-DROP ROLE IF EXISTS 'vendor';
-DROP ROLE IF EXISTS 'customer';
-DROP ROLE IF EXISTS 'shipper';
-DROP USER IF EXISTS 'vendor'@'localhost';
-DROP USER IF EXISTS 'customer'@'localhost';
-DROP USER IF EXISTS 'shipper'@'localhost';
-
-CREATE ROLE 'vendor', 'customer', 'shipper';
-GRANT SELECT, INSERT ON lazadar.vendor TO 'vendor';
-GRANT SELECT, UPDATE, DELETE, INSERT ON lazadar.product TO 'vendor';
-
-GRANT SELECT, INSERT ON lazadar.customer TO 'customer';
-GRANT SELECT, INSERT ON lazadar.orders TO 'customer';
-GRANT SELECT, EXECUTE ON lazadar.vendor TO 'customer';
-GRANT SELECT, EXECUTE ON lazadar.product TO 'customer';
-GRANT EXECUTE ON PROCEDURE sp_fail TO 'customer';
-
-GRANT SELECT, UPDATE ON lazadar.orders TO 'shipper';
-GRANT SELECT, UPDATE ON lazadar.product TO 'shipper';
-GRANT SELECT ON lazadar.customer TO 'shipper';
-
-
-CREATE USER 'customer'@'localhost' IDENTIFIED BY '1';
-GRANT 'customer' TO 'customer'@'localhost';
-
-CREATE USER 'vendor'@'localhost' IDENTIFIED BY '1';
-GRANT 'vendor' TO 'vendor'@'localhost';
-
-CREATE USER 'shipper'@'localhost' IDENTIFIED BY '1';
-GRANT 'shipper' TO 'shipper'@'localhost';
 
 
 SET GLOBAL log_bin_trust_function_creators = 1;
@@ -260,6 +230,43 @@ BEGIN
 END$$
 
 DELIMITER ;
+
+
+
+
+
+
+
+DROP ROLE IF EXISTS 'vendor';
+DROP ROLE IF EXISTS 'customer';
+DROP ROLE IF EXISTS 'shipper';
+DROP USER IF EXISTS 'vendor'@'localhost';
+DROP USER IF EXISTS 'customer'@'localhost';
+DROP USER IF EXISTS 'shipper'@'localhost';
+
+CREATE ROLE 'vendor', 'customer', 'shipper';
+GRANT SELECT, INSERT ON lazadar.vendor TO 'vendor';
+GRANT SELECT, UPDATE, DELETE, INSERT ON lazadar.product TO 'vendor';
+
+GRANT SELECT, INSERT ON lazadar.customer TO 'customer';
+GRANT SELECT, INSERT ON lazadar.orders TO 'customer';
+GRANT SELECT ON lazadar.vendor TO 'customer';
+GRANT SELECT ON lazadar.product TO 'customer';
+GRANT EXECUTE ON PROCEDURE sp_fail TO 'customer';
+
+GRANT SELECT, UPDATE ON lazadar.orders TO 'shipper';
+GRANT SELECT, UPDATE ON lazadar.product TO 'shipper';
+GRANT SELECT ON lazadar.customer TO 'shipper';
+
+
+CREATE USER 'customer'@'localhost' IDENTIFIED BY '1';
+GRANT 'customer' TO 'customer'@'localhost';
+
+CREATE USER 'vendor'@'localhost' IDENTIFIED BY '1';
+GRANT 'vendor' TO 'vendor'@'localhost';
+
+CREATE USER 'shipper'@'localhost' IDENTIFIED BY '1';
+GRANT 'shipper' TO 'shipper'@'localhost';
 
 
 

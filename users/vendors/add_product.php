@@ -25,7 +25,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     if (isset($_POST['field']) && isset($_POST['val'])) {
         $extra_fields = array_combine($_POST['field'], $_POST['val']);
-
+        unset($extra_fields['']);
+        
         $product_id = array('_id' => (int) $product_id);
         $extra_fields = array_merge($product_id, $extra_fields);
 

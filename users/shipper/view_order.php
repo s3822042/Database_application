@@ -1,6 +1,6 @@
 <?php
 require 'shipper_auth.php';
-require "../../config_mysql.php";
+require "config_mysql.php";
 require "../../config_mongodb.php";
 
 $query = "SELECT Orders.OrderID, Orders.VendorID, Orders.OrderStatus, Product.ProductID, Product.ProductName, Product.Price, Orders.HubID, Customer.CustomerAddress

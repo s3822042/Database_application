@@ -89,9 +89,9 @@ GRANT SELECT, INSERT ON lazadar.vendor TO 'vendor';
 GRANT SELECT, UPDATE, DELETE, INSERT ON lazadar.product TO 'vendor';
 
 GRANT SELECT, INSERT ON lazadar.customer TO 'customer';
-GRANT INSERT ON lazadar.orders TO 'customer';
-GRANT SELECT ON lazadar.vendor TO 'customer';
-GRANT SELECT ON lazadar.product TO 'customer';
+GRANT SELECT, INSERT ON lazadar.orders TO 'customer';
+GRANT SELECT, EXECUTE ON lazadar.vendor TO 'customer';
+GRANT SELECT, EXECUTE ON lazadar.product TO 'customer';
 
 GRANT SELECT, UPDATE ON lazadar.orders TO 'shipper';
 GRANT SELECT, UPDATE ON lazadar.product TO 'shipper';
@@ -229,23 +229,23 @@ DELIMITER $$
 CREATE PROCEDURE `sp_fail`(
         IN `CustomerID` int(11),
         IN `VendorID` int(11) ,
-        IN `ShipperID` int(11),
         IN `HubID` int(11),
-        IN ProductID int(11)
+        IN ProductID int(11),
+        IN RandomWaitingTime int
 )
 BEGIN
     DECLARE `_rollback` BOOL DEFAULT 0;
     DECLARE CONTINUE HANDLER FOR SQLEXCEPTION SET `_rollback` = 1;
     START TRANSACTION;
 
-        -- SELECT * FROM product WHERE product.ProductID = ProductID LOCK IN SHARE MODE;
-        INSERT INTO orders (CustomerID, VendorID,ShipperID,HubID, ProductID)
+        -- SELECT * FROM product WHERE product.ProductID = ProductID FOR UPDATE ;
+        INSERT INTO orders (CustomerID, VendorID,HubID, ProductID)
         VALUES
-        (CustomerID, VendorID, ShipperID, HubID, ProductID);
+        (CustomerID, VendorID, HubID, ProductID);
        -- UPDATE product SET Status = 'Pending' WHERE product.ProductID = ProductID;
        -- DELETE FROM hub WHERE HubID = 3;
 
-        SELECT SLEEP(30);
+        SELECT SLEEP(RandomWaitingTime);
        -- UPDATE product SET Status = 'Purchases' WHERE product.ProductID = ProductID;
     IF `_rollback` THEN
         ROLLBACK;

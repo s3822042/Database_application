@@ -1,26 +1,26 @@
 
 <?php
+require "customer_auth.php";
 require "../../config_mysql.php";
 require "../../config_mongodb.php";
 
-$total_pages = (int)$pdo->query($count_product)->fetch(PDO::FETCH_ASSOC)["COUNT(*)"];
+$total_pages = (int)$pdo->query("SELECT COUNT(*) FROM product;")->fetch(PDO::FETCH_ASSOC)["COUNT(*)"];
 
 $num_results_on_page = 7;
 $page = isset($_GET['page']) && is_numeric($_GET['page']) ? $_GET['page'] : 1;
 
 $calc_page = ($page - 1) * $num_results_on_page;
-$query = 'SELECT * FROM products ORDER BY added_date desc LIMIT ?,?';
+$query = 'SELECT * FROM product ORDER BY added_date desc LIMIT ?,?';
 
 $where_conditions = [];
 $pname = '';
 $sprice = 0;
-$eprice = (float)$pdo->query($max_price)->fetch(PDO::FETCH_ASSOC)["MAX(Price)"];
+$eprice = (float)$pdo->query("SELECT MAX(Price) FROM product;")->fetch(PDO::FETCH_ASSOC)["MAX(Price)"];
 $vendor_id = 0;
 $where_condition_count  = 0;
 $field = '';
 $field_value = '';
 $elements = ['pname', 'sprice', 'eprice', 'vendor_id', 'field', 'field_value'];
-session_start();
 if (isset($_GET["pname"])){
 	for ($i = 0; $i <count($elements); $i++) {
 		if(!isset($_SESSION[$elements[$i]]) && !empty($_GET[$elements[$i]])){
@@ -65,17 +65,16 @@ if(count($where_conditions) > 0){
 	$_SESSION['where_conditions'] = $where_script;
 }
 if (isset($_POST["appetizer_button"])){
-	echo "hihi";
 	for ($i = 0; $i <count($elements); $i++) {
 		unset($_SESSION[$elements[$i]]);
 		unset($_SESSION['where_conditions']);
-		header("location:http://localhost:8000/VanAnh/pagination.php");
+		header("location:http://localhost:8000/users/customer/pagination.php");
 	  }
 }
 
 
 if(isset($_SESSION['where_conditions'])){
-	$query = 'SELECT * FROM products '. $_SESSION['where_conditions'] . ' ORDER BY added_date desc LIMIT ?,?';
+	$query = 'SELECT * FROM product '. $_SESSION['where_conditions'] . ' ORDER BY added_date desc LIMIT ?,?';
 	echo $query;
 }
 // query from database
@@ -86,6 +85,7 @@ if ($stmt = $pdo->prepare($query)) {
 	$stmt->bindParam(2, $num_results_on_page, PDO::PARAM_INT);
 	$stmt->execute(); 
 }
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -196,11 +196,7 @@ if ($stmt = $pdo->prepare($query)) {
 						<?php if ($row['haveExtraField'] == '1'): ?>
 						<td><a href="product_details.php?productID=<?php echo $row['ProductID']?>">More</td>
 						<?php endif; ?>
-						<td>
-						<form  method="post">
-						<input type="submit" name="buy" value="Buy" >
-						</form>
-						</td>
+						<td><a href="buy_product.php?productID=<?php echo $row['ProductID']?>&vendorID=<?php echo $row['VendorID']?>">Buy</td>
 					</tr>
 				<?php endwhile; ?>
 		</table>

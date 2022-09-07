@@ -110,6 +110,9 @@ GRANT 'shipper' TO 'shipper'@'localhost';
 
 SET GLOBAL log_bin_trust_function_creators = 1;
 
+-- indexing
+CREATE INDEX productName ON product (ProductName);
+CREATE INDEX productPrice ON product (Price);
 
 -- funtion to find the nearest hub id from defined latitude and longtitude
 DROP FUNCTION IF EXISTS nearest_hub;

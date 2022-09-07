@@ -18,16 +18,16 @@
   <body>
 
   <div class="card custom">
-    <div class="card text-center align">
+    <div class="text-center card align">
       <div class="card-body-custom">
         <h5 class="card-title">View products</h5>
         <div class="b">
           <p class="card-text">display all products from all vendors. Most recently added products are displayed first. You must use pagination to limit the number of displayed products at a time</p>
         </div>
-        <a href="#" class="btn btn-primary make-bottom">View products</a>
+        <a href="users/customer/pagination.php" class="btn btn-primary make-bottom">View products</a>
       </div>
     </div>
-    <div class="card text-center align">
+    <div class="text-center card align">
       <div class="card-body-custom">
         <h5 class="card-title">Search vendors based on distance</h5>
         <div class="b">

@@ -1,6 +1,8 @@
+<<<<<<< HEAD
 <?php
 require "config_mysql.php";
 require "../../config_mongodb.php";
+
 // update order status
 $id = $_POST['id'];
 $select_value = $_POST['status'];
@@ -15,7 +17,7 @@ if ($orders_status['OrderStatus'] !== 'Pending') {
     $query1  = $pdo->prepare($pending_query);
     $query1->execute();
 
-    sleep(10);
+    sleep(rand(10, 30));
 
     $update_query = "UPDATE Orders SET OrderStatus = '" . $select_value . "' WHERE  OrderID = '" . $id . "' ";
     $query3  = $pdo->prepare($update_query);

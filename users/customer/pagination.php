@@ -48,7 +48,7 @@ if (isset($_GET["pname"])){
 					if($count_id > 0){
 						$list_id =  substr_replace($list_id ,"",-1) . ")";
 						$where_conditions[$where_condition_count] = $list_id;
-					}	
+					}
 				}
 			}
 			$where_condition_count ++;
@@ -83,14 +83,14 @@ if ($stmt = $pdo->prepare($query)) {
 	$calc_page = ($page - 1) * $num_results_on_page;
 	$stmt->bindParam(1, $calc_page, PDO::PARAM_INT);
 	$stmt->bindParam(2, $num_results_on_page, PDO::PARAM_INT);
-	$stmt->execute(); 
+	$stmt->execute();
 }
 
 ?>
 <!DOCTYPE html>
 <html>
 	<head>
-		<title>PHP & MySQL Pagination by CodeShack</title>
+		<title>Search product</title>
 		<meta charset="utf-8">
 		<style>
 		html {
@@ -185,7 +185,7 @@ if ($stmt = $pdo->prepare($query)) {
 				<th>Vendor id</th>
 				<th>ADD Date</th>
 			</tr>
-				<?php while ($row = $stmt->fetch(PDO::FETCH_ASSOC)): ?>	
+				<?php while ($row = $stmt->fetch(PDO::FETCH_ASSOC)): ?>
 					<tr>
 						<td><?php echo $row['ProductID']; ?></td>
 						<td><?php echo $row['ProductName']; ?></td>

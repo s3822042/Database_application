@@ -1,11 +1,12 @@
 <?php
-  $pageType = "vendor";
-  include "authentication.php";
+$pageType = "vendor";
+include "authentication.php";
 ?>
 
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -14,10 +15,11 @@
   <link rel="stylesheet" type="text/css" href="../css/homepage.css">
   <title>Vendor Page</title>
 </head>
+
 <body>
 
   <div class="card custom">
-    <div class="card text-center align">
+    <div class="text-center card align">
       <div class="card-body-custom">
         <h5 class="card-title">List products</h5>
         <div class="b">
@@ -26,7 +28,7 @@
         <a href="users/vendors/display_product.php" class="btn btn-primary make-bottom">List products</a>
       </div>
     </div>
-    <div class="card text-center align">
+    <div class="text-center card align">
       <div class="card-body-custom">
         <h5 class="card-title">Add a product</h5>
         <div class="b">
@@ -38,4 +40,5 @@
   </div>
 
 </body>
+
 </html>

@@ -1,20 +1,18 @@
 <?php
 require 'shipper_auth.php';
-require "config_mysql.php";
+require "../../config_mysql.php";
 require "../../config_mongodb.php";
 
+$ShipperID = $_SESSION['user']['id'];
+$HubID = (int)$pdo->query("SELECT HubID FROM shipper WHERE ShipperID =".$ShipperID.";")->fetch(PDO::FETCH_ASSOC)["HubID"];
 $query = "SELECT Orders.OrderID, Orders.VendorID, Orders.OrderStatus, Product.ProductID, Product.ProductName, Product.Price, Orders.HubID, Customer.CustomerAddress
 FROM Orders
-INNER JOIN OrderDetail ON OrderDetail.OrderID = Orders.OrderID
-INNER JOIN Product ON OrderDetail.ProductID = Product.ProductID
 INNER JOIN Customer ON Orders.CustomerID = Customer.CustomerID
-WHERE Orders.ShipperID = ?";
-
+INNER JOIN product ON product.ProductID = Orders.ProductID
+WHERE Orders.HUBID  =".$HubID.";";
 $stm = $pdo->prepare($query);
-$stm->execute([$_SESSION['user']['id']]); // The ID of the shipper using the website
+$stm->execute(); // The ID of the shipper using the website
 $orders_array = $stm->fetchAll(PDO::FETCH_ASSOC);
-
-print_r($orders_array);
 
 ?>
 
@@ -29,7 +27,7 @@ print_r($orders_array);
 
 <body>
     <div class="px-20 py-10">
-        <h1 class="text-4xl text-black">Hub: <?php echo $orders_array[0]['HubID']  ?></h1>
+        <h1 class="text-4xl text-black">Oder in Hub: <?php echo $HubID  ?></h1>
         <!-- Product list -->
         <div class="my-5">
             <div class="container mx-auto">

@@ -1,7 +1,7 @@
 
 <?php
 require "customer_auth.php";
-require "config_mysql.php";
+require "../../config_mysql.php";
 require "../../config_mongodb.php";
 
 $total_pages = (int)$pdo->query("SELECT COUNT(*) FROM product;")->fetch(PDO::FETCH_ASSOC)["COUNT(*)"];

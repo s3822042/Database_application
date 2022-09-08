@@ -10,7 +10,6 @@ function buy_product($pdo, $customerID, $VendorID, $ProductID){
 	$HubID = (int)$pdo->query("SELECT HubID FROM vendor WHERE VendorID =".$VendorID.";")->fetch(PDO::FETCH_ASSOC)["HubID"];
 	$buy_procedure = 'CALL sp_fail(?, ?, ?, ?, ?)';
 	 if ($temp = $pdo->prepare($buy_procedure)) {
-		$temp = $pdo->prepare($buy_procedure);
 		$temp->bindParam(1, $customerID, PDO::PARAM_INT);
 		$temp->bindParam(2, $VendorID, PDO::PARAM_INT);
 		$temp->bindParam(3, $HubID, PDO::PARAM_INT);

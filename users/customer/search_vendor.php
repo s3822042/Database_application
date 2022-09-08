@@ -1,6 +1,6 @@
 <?php
 require "customer_auth.php";
-require "config_mysql.php";
+require "../../config_mysql.php";
 require "../../config_mongodb.php";
 require "../homeNav.php";
 

@@ -200,14 +200,13 @@ END$$
 -- reference from http://geekdirt.com/blog/shared-and-exclusive-locks/
 DROP PROCEDURE IF EXISTS `sp_fail`;
 DELIMITER $$
-CREATE DEFINER = 'customer'@'localhost' PROCEDURE `sp_fail`(
+CREATE PROCEDURE `sp_fail`(
         IN `CustomerID` int(11),
         IN `VendorID` int(11) ,
         IN `HubID` int(11),
         IN ProductID int(11),
         IN RandomWaitingTime int
 )
-SQL SECURITY DEFINER
 BEGIN
     DECLARE `_rollback` BOOL DEFAULT 0;
     DECLARE CONTINUE HANDLER FOR SQLEXCEPTION SET `_rollback` = 1;
@@ -231,6 +230,33 @@ END$$
 
 DELIMITER ;
 
+
+-- transaction update order
+DROP PROCEDURE IF EXISTS `update_order`;
+DELIMITER $$
+CREATE PROCEDURE `update_order`(
+        IN `OrderID` int(11),
+        IN `ShipperID` int(11),
+        IN `OrderStatus` VARCHAR(50),
+        IN RandomWaitingTime int
+)
+BEGIN
+    DECLARE `_rollback` BOOL DEFAULT 0;
+    DECLARE CONTINUE HANDLER FOR SQLEXCEPTION SET `_rollback` = 1;
+    START TRANSACTION;
+
+        UPDATE orders SET orders.OrderStatus = OrderStatus WHERE orders.OrderID = OrderID;
+        UPDATE orders SET orders.ShipperID = ShipperID WHERE orders.OrderID = OrderID;
+        SELECT SLEEP(RandomWaitingTime);
+
+    IF `_rollback` THEN
+        ROLLBACK;
+    ELSE
+        COMMIT;
+    END IF;
+END$$
+
+DELIMITER ;
 
 
 
@@ -257,7 +283,7 @@ GRANT EXECUTE ON PROCEDURE sp_fail TO 'customer';
 GRANT SELECT, UPDATE ON lazadar.orders TO 'shipper';
 GRANT SELECT, UPDATE ON lazadar.product TO 'shipper';
 GRANT SELECT ON lazadar.customer TO 'shipper';
-
+GRANT EXECUTE ON PROCEDURE update_order TO 'customer';
 
 CREATE USER 'customer'@'localhost' IDENTIFIED BY '1';
 GRANT 'customer' TO 'customer'@'localhost';

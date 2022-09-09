@@ -245,6 +245,7 @@ BEGIN
     DECLARE CONTINUE HANDLER FOR SQLEXCEPTION SET `_rollback` = 1;
     START TRANSACTION;
 
+        SELECT * FROM Orders WHERE Orders.OrderID = OrderID LOCK IN SHARE MODE;
         UPDATE orders SET orders.OrderStatus = OrderStatus WHERE orders.OrderID = OrderID;
         UPDATE orders SET orders.ShipperID = ShipperID WHERE orders.OrderID = OrderID;
         SELECT SLEEP(RandomWaitingTime);

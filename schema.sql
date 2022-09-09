@@ -212,7 +212,7 @@ BEGIN
     DECLARE CONTINUE HANDLER FOR SQLEXCEPTION SET `_rollback` = 1;
     START TRANSACTION;
 
-        -- SELECT * FROM product WHERE product.ProductID = ProductID FOR UPDATE ;
+        SELECT * FROM product WHERE product.ProductID = ProductID LOCK IN SHARE MODE;
         INSERT INTO orders (CustomerID, VendorID,HubID, ProductID)
         VALUES
         (CustomerID, VendorID, HubID, ProductID);

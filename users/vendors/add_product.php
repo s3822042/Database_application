@@ -26,7 +26,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (isset($_POST['field']) && isset($_POST['val'])) {
         $extra_fields = array_combine($_POST['field'], $_POST['val']);
         unset($extra_fields['']);
-        
+
         $product_id = array('_id' => (int) $product_id);
         $extra_fields = array_merge($product_id, $extra_fields);
 
@@ -78,7 +78,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     <label for="subject" class="mb-3 block text-base font-medium text-[#07074D]">
                         Price
                     </label>
-                    <input type="number" name="product_price" id="product_price" placeholder="Product Price" class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md" />
+                    <input type="number" step='any' name="product_price" id="product_price" placeholder="Product Price" class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md" />
                 </div>
                 <div class="mb-5">
                     <label for="message" class="mb-3 block text-base font-medium text-[#07074D]">

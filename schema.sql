@@ -216,11 +216,8 @@ BEGIN
         INSERT INTO orders (CustomerID, VendorID,HubID, ProductID)
         VALUES
         (CustomerID, VendorID, HubID, ProductID);
-       -- UPDATE product SET Status = 'Pending' WHERE product.ProductID = ProductID;
-       -- DELETE FROM hub WHERE HubID = 3;
 
         SELECT SLEEP(RandomWaitingTime);
-       -- UPDATE product SET Status = 'Purchases' WHERE product.ProductID = ProductID;
     IF `_rollback` THEN
         ROLLBACK;
     ELSE

@@ -2,7 +2,25 @@
 
 ## Contribution:
 
+Link to YouTube video:
+
 ## Instructions:
+ - All contributions from team members are the same and equal across the board.
+
+Before running the application:
+ 1. Start your MySQL server and MongoDB local server.
+ 2. Open the config_mysql.php file and change the variables into suitable values for your MySQL server. 
+    The variables names are self explanatory.
+ 3. If you have a different MongoDB uri than the default one, i.e. "mongodb://localhost:27017"
+    Please also open the configmongodb.php and change the uri.
+ 4. Run the schema.sql so that the necessary
+    tables and procedures and triggers are created for the application to work.
+ 5. Install Composer for PHP libraries and run "composer install" on folder root to
+    install the necessery libraries for the application.
+ 6. Also make sure you have the PHP MongoDB extension installed. The guide for this can be
+    found here: https://docs.mongodb.com/drivers/php/
+
+Creating account:
 1. Sign up to create an account (your account is always for user access)
 2. Choose one of three type user account (customer, vendor, or shipper)
     + Vendor: able to list products, add a product, and edit a product

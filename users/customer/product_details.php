@@ -1,7 +1,9 @@
-
 <?php
-require "../../config_mysql.php";
+require "customer_auth.php";
+require "config_mysql.php";
 require "../../config_mongodb.php";
+require "../homeNav.php";
+
 
 if (isset($_GET['productID'])) {
     $product_id = (int) $_GET['productID'];
@@ -9,7 +11,7 @@ if (isset($_GET['productID'])) {
     if (!is_null($mongo)) {
         $extra_fields = iterator_to_array($mongo);
         foreach ($extra_fields as $keys => $value) {
-            echo "<li>$keys: $value</li>";
+            echo "<div>$keys: $value</div>";
         }
     }
-  }
+}

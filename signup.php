@@ -1,9 +1,10 @@
 <?php
-  session_start();
+session_start();
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,14 +12,15 @@
   <link rel="stylesheet" href="css/signup.css">
   <title>Sign up</title>
 </head>
+
 <body>
 
   <div class='block'>
     <form class='form' id="signup" method="post" onsubmit="return handleSubmit();" action='registration.php'>
-    <h1>Sign up</h1>
+      <h1>Sign up</h1>
       <div class='form-control'>
 
-        <div class="forum" style={{marginTop: 20}}>
+        <div class="mt-[20px] forum">
           <input id="inputUserType" type="hidden" name="userType" value="customer">
           <ul id="userType" style="padding-left: 0px;">
             <li id="customer" class="button-34 btnActive" onclick="changeUserType('customer');">Customer
@@ -32,9 +34,7 @@
           <div style="clear:both;"></div>
           <div class='wrapper'>
             <div id='field1' class='input-control inside'>
-              <input id='inputName' type='text' placeholder=' ' name='name'
-              onclick="addBorder('field1')"
-              onBlur="rmvBorder('field1')">
+              <input id='inputName' type='text' placeholder=' ' name='name' onclick="addBorder('field1')" onBlur="rmvBorder('field1')">
               <label class='move-out'>Name</label>
             </div>
           </div>
@@ -45,9 +45,7 @@
           <div style="clear:both;"></div>
           <div class='wrapper'>
             <div id='field2' class='input-control inside'>
-              <input id='inputAddress' type='text' placeholder=' ' name='address'
-              onclick="addBorder('field2')"
-              onBlur="rmvBorder('field2')">
+              <input id='inputAddress' type='text' placeholder=' ' name='address' onclick="addBorder('field2')" onBlur="rmvBorder('field2')">
               <label class='move-out'>Address</label>
             </div>
           </div>
@@ -61,18 +59,14 @@
             <div style="clear:both;"></div>
             <div class='wrapperSplit1' style="float: left; margin-left: 10px">
               <div id='field6' class='input-control inside'>
-                <input id='inputLatitude' type='number' step='any' placeholder=' ' name='latitude'
-                onclick="addBorder('field6')"
-                onBlur="rmvBorder('field6')">
+                <input id='inputLatitude' type='number' step='any' placeholder=' ' name='latitude' onclick="addBorder('field6')" onBlur="rmvBorder('field6')">
                 <label class='move-out'>Latitude</label>
               </div>
             </div>
 
             <div class='wrapperSplit1' style="float:right; margin-right: 10px">
               <div id='field7' class='input-control inside'>
-                <input id='inputLongitude' type='number' step='any' placeholder=' ' name='longitude'
-                onclick="addBorder('field7')"
-                onBlur="rmvBorder('field7')">
+                <input id='inputLongitude' type='number' step='any' placeholder=' ' name='longitude' onclick="addBorder('field7')" onBlur="rmvBorder('field7')">
                 <label class='move-out'>Longitude</label>
               </div>
             </div>
@@ -86,9 +80,7 @@
           <div style="clear:both;"></div>
           <div class='wrapper'>
             <div id='field3' class='input-control inside'>
-              <input id='inputUsername' type='text' placeholder=' ' name='username'
-              onclick="addBorder('field3')"
-              onBlur="rmvBorder('field3')">
+              <input id='inputUsername' type='text' placeholder=' ' name='username' onclick="addBorder('field3')" onBlur="rmvBorder('field3')">
               <label class='move-out'>Username</label>
             </div>
           </div>
@@ -99,13 +91,10 @@
           <div style="clear:both;"></div>
           <div class='wrapper'>
             <div id='field4' class='input-control inside'>
-              <input id='inputPass1' type='password' placeholder=' ' name='pass1'
-              onclick="addBorder('field4')"
-              onBlur="rmvBorder('field4')"
-              oninput="detectPass('inputPass1', 'strength1', 'passLabel1')">
+              <input id='inputPass1' type='password' placeholder=' ' name='pass1' onclick="addBorder('field4')" onBlur="rmvBorder('field4')" oninput="detectPass('inputPass1', 'strength1', 'passLabel1')">
               <label class='move-out'>Password</label>
               <div class='img-item' onclick="displayPassword('inputPass1', 'eye1')">
-                <img id='eye1' src="asset/hide.png"/>
+                <img id='eye1' src="asset/hide.png" />
               </div>
             </div>
           </div>
@@ -118,13 +107,10 @@
           <div style="clear:both;"></div>
           <div class='wrapper'>
             <div id='field5' class='input-control inside'>
-              <input id='inputPass2' type='password' placeholder=' ' name='pass2'
-              onclick="addBorder('field5')"
-              onBlur="rmvBorder('field5')"
-              oninput="detectPass('inputPass2', 'strength2', 'passLabel2')">
-              <label class='move-out'>Comfirm Password</label>
+              <input id='inputPass2' type='password' placeholder=' ' name='pass2' onclick="addBorder('field5')" onBlur="rmvBorder('field5')" oninput="detectPass('inputPass2', 'strength2', 'passLabel2')">
+              <label class='move-out'>Confirm Password</label>
               <div class='img-item' onclick="displayPassword('inputPass2', 'eye2')">
-                <img id='eye2' src="asset/hide.png"/>
+                <img id='eye2' src="asset/hide.png" />
               </div>
             </div>
           </div>
@@ -144,6 +130,7 @@
   <script src="js/common.js"></script>
 
 </body>
+
 </html>
 
 

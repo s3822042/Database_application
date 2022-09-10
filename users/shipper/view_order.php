@@ -2,6 +2,8 @@
 require 'shipper_auth.php';
 require "config_mysql.php";
 require "../../config_mongodb.php";
+require "../homeNav.php";
+
 
 $ShipperID = $_SESSION['user']['id'];
 $HubID = (int)$pdo->query("SELECT HubID FROM shipper WHERE ShipperID =" . $ShipperID . ";")->fetch(PDO::FETCH_ASSOC)["HubID"];
@@ -27,7 +29,7 @@ $orders_array = $stm->fetchAll(PDO::FETCH_ASSOC);
 
 <body>
     <div class="px-20 py-10">
-        <h1 class="text-4xl text-black">Oder in Hub: <?php echo $HubID  ?></h1>
+        <h1 class="text-4xl text-black">Order in Hub: <?php echo $HubID  ?></h1>
         <!-- Product list -->
         <div class="my-5">
             <div class="container mx-auto">

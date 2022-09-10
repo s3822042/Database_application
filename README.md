@@ -1,12 +1,17 @@
 # Database Application Group 1
 
 ## Contribution:
+Team member: 
+Huỳnh Vân Anh (s3836320)
+Võ Thành Luân (s3822042)
+Phạm Gia Nguyễn (s3819521)
+Nguyễn Xuân Thành (s3915468)
 
-Link to YouTube video:
-
-## Instructions:
  - All contributions from team members are the same and equal across the board.
 
+Link to YouTube video: https://www.youtube.com/watch?v=7Kph0RcPGN4&t=323s
+
+## Instructions:
 Before running the application:
  1. Start your MySQL server and MongoDB local server.
  2. Open the config_mysql.php file and change the variables into suitable values for your MySQL server. 

@@ -2,7 +2,7 @@
 $server = "localhost";
 $port = "3306";
 $username = "root";
-$password = "";
+$password = "ZedPaul1312@2001!#";
 $database = "lazadar";
 
 
@@ -18,4 +18,3 @@ try {
 } catch (PDOException $e) {
   echo "Connection failed: " . $e->getMessage();
 }
-?>

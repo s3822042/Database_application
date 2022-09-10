@@ -1,6 +1,6 @@
 <?php
 require 'vendor_auth.php';
-require "../../config_mysql.php";
+require "config_mysql.php";
 require "../../config_mongodb.php";
 require "../homeNav.php";
 
@@ -10,7 +10,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     $hasExtra = 0;
     if (isset($_POST['field']) && isset($_POST['val'])) {
-      $hasExtra = 1;
+        $hasExtra = 1;
     }
 
     $stmt = $pdo->prepare("INSERT INTO `Product` (VendorID, ProductName,ProductDescription, Price, haveExtraField, added_date) VALUES (:vendor_id, :product_name, :product_description, :product_price, $hasExtra, now())");

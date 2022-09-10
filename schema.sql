@@ -239,9 +239,9 @@ CREATE PROCEDURE `update_order`(
 )
 BEGIN
     DECLARE `_rollback` BOOL DEFAULT 0;
+
     DECLARE CONTINUE HANDLER FOR SQLEXCEPTION SET `_rollback` = 1;
     START TRANSACTION;
-
         SELECT * FROM Orders WHERE Orders.OrderID = OrderID LOCK IN SHARE MODE;
         UPDATE orders SET orders.OrderStatus = OrderStatus WHERE orders.OrderID = OrderID;
         UPDATE orders SET orders.ShipperID = ShipperID WHERE orders.OrderID = OrderID;
@@ -255,11 +255,6 @@ BEGIN
 END$$
 
 DELIMITER ;
-
-
-
-
-
 
 DROP ROLE IF EXISTS 'vendor';
 DROP ROLE IF EXISTS 'customer';
@@ -281,7 +276,8 @@ GRANT EXECUTE ON PROCEDURE sp_fail TO 'customer';
 GRANT SELECT, UPDATE ON lazadar.orders TO 'shipper';
 GRANT SELECT, UPDATE ON lazadar.product TO 'shipper';
 GRANT SELECT ON lazadar.customer TO 'shipper';
-GRANT EXECUTE ON PROCEDURE update_order TO 'customer';
+GRANT SELECT ON lazadar.shipper TO 'shipper';
+GRANT EXECUTE ON PROCEDURE update_order TO 'shipper';
 
 CREATE USER 'customer'@'localhost' IDENTIFIED BY '1';
 GRANT 'customer' TO 'customer'@'localhost';

@@ -2,5 +2,4 @@
 .vscode
 .git
 vendor
-config_mysql.php
 config_mongodb.php

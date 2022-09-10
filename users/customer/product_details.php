@@ -1,6 +1,6 @@
-
 <?php
-require "../../config_mysql.php";
+require "customer_auth.php";
+require "config_mysql.php";
 require "../../config_mongodb.php";
 
 if (isset($_GET['productID'])) {
@@ -12,4 +12,4 @@ if (isset($_GET['productID'])) {
             echo "<li>$keys: $value</li>";
         }
     }
-  }
+}
